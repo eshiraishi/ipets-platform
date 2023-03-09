@@ -1,0 +1,529 @@
+openapi: 3.0.3
+info:
+  title: iPets
+  description: |-
+    Especificacao dos contratos disponibilizados pelo servidor do aplicativo iPets, um
+    aplicativo para contratacao de servicos para pets.
+    Parte do projeto do grupo 21 na disciplina de Engenharia de Software, ministrada em
+    2023.1 na UFABC.
+  version: 0.1.0
+servers:
+  - url: http://localhost:8080/
+tags:
+  - name: Usuarios
+    description: Usados na interface para gerir usuarios da plataforma.
+  - name: Servicos
+    description: Usados na interface de usuarios prestadores para gerir servicos na plataforma.
+  - name: Pedidos
+    description: Usados na interface de usuarios consumidores para gerir servicos na plataforma.
+  - name: Utilidades
+    description: Usados nas interfaces para utilidade ou para habilitar outras funcionalidades.
+paths:
+  /users:
+    put:
+      tags:
+        - Usuarios
+      summary: Cadastra os dados de um novo usuario na plataforma
+      operationId: createUser
+      requestBody:
+        description: Dados do usuario a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserData"
+
+      responses:
+        "201":
+          description: Usuario consumidor criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Usuario consumidor requisitado possui dados invalidos
+  /users/{userId}:
+    get:
+      tags:
+        - Usuarios
+      summary: Obtem os dados de um usuario existente por ID na plataforma
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID do usuario
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario consumidor obtido com sucesso para o ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Usuario consumidor inexistente para o ID
+    patch:
+      tags:
+        - Usuarios
+      summary: Atualiza os dados de usuario existente por ID na plataforma
+      operationId: setUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID do usuario
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Dados do usuario a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserData"
+      responses:
+        "200":
+          description: Usuario consumidor obtido com sucesso para o ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Usuario consumidor inexistente para o ID
+    delete:
+      tags:
+        - Usuarios
+      summary: Remove os dados de um usuario existente por ID na plataforma
+      operationId: removeUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID do usuario
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario consumidor removido com sucesso para o ID
+        "404":
+          description: Usuario consumidor inexistente para o ID
+  /services:
+    put:
+      tags:
+        - Servicos
+      summary: Cadastra os dados de um novo servico na plataforma
+      operationId: createService
+      requestBody:
+        description: Dado do servico a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceData"
+      responses:
+        "201":
+          description: Servico criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+        "400":
+          description: Servico requisitado possui dados invalidos
+  /services/{serviceId}:
+    get:
+      tags:
+        - Servicos
+      summary: Obtem os dados de um servico existente por ID na plataforma
+      operationId: getService
+      parameters:
+        - name: serviceId
+          in: path
+          description: ID do servico
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do servico obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+        "404":
+          description: Servico inexistente para o ID
+    patch:
+      tags:
+        - Servicos
+      summary: Atualiza os dados de um servico existente por ID na plataforma
+      operationId: setService
+      parameters:
+        - name: serviceId
+          in: path
+          description: ID do servico
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Dado do servico a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceData"
+      responses:
+        "200":
+          description: Dados do servico atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+        "404":
+          description: Servico inexistente para o ID
+    delete:
+      tags:
+        - Servicos
+      summary: Remove os dados de um servico existente por ID na plataforma
+      operationId: removeService
+      parameters:
+        - name: serviceId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do servico removidos com sucesso
+        "404":
+          description: Servico inexistente para o ID
+  /requests:
+    put:
+      tags:
+        - Pedidos
+      summary: Cadastra os dados de um novo pedido na plataforma
+      operationId: createRequest
+      requestBody:
+        description: Dado do pedido a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestData"
+      responses:
+        "201":
+          description: Pedido criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Request"
+        "400":
+          description: Pedido requisitado possui dados invalidos
+  /requests/{requestId}:
+    get:
+      tags:
+        - Pedidos
+      summary: Obtem os dados de um pedido existente por ID na plataforma
+      parameters:
+        - name: requestId
+          in: path
+          description: ID do pedido
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do pedido obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Request"
+        "404":
+          description: Pedido inexistente para o ID
+    patch:
+      tags:
+        - Pedidos
+      summary: Atualiza os dados de um pedido existente por ID na plataforma
+      parameters:
+        - name: requestId
+          in: path
+          description: ID do pedido
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do pedido atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Request"
+        "404":
+          description: Pedido inexistente para o ID
+      requestBody:
+        description: Dado do pedido a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestData"
+  /services/ids:
+    get:
+      tags:
+        - Utilidades
+      summary: Obtem os IDs de todos os servicos existentes na plataforma
+      operationId: getAllServiceIds
+      responses:
+        "200":
+          description: IDs obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdList"
+  /user/{userId}/requests:
+    get:
+      tags:
+        - Utilidades
+      summary: Obtem os dados de todos os pedidos de servicos feitos para um usuario existente por ID
+      parameters:
+        - name: userId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Pedidos obtidos com sucesso para o ID do usuario prestador
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IdList"
+        "404":
+          description: Usuario prestador invalido para o ID
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        code:
+          description: CPF ou CNPJ
+          type: string
+          example: "98202023025"
+        firstName:
+          type: string
+          example: Ariel
+        lastName:
+          type: string
+          example: Silva dos Santos
+        email:
+          type: string
+          format: email
+          example: ariel.silva@ipets.com
+        password:
+          type: string
+          format: password
+        address:
+          $ref: "#/components/schemas/Address"
+        bankAccount:
+          $ref: "#/components/schemas/BankAccount"
+        creditCards:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreditCard"
+        avatar:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
+      required:
+        - "id"
+        - "firstName"
+        - "lastName"
+        - "email"
+        - "address"
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Av. Paulista
+        number:
+          type: string
+          example: "1001"
+        complement:
+          type: string
+          example: apto 21
+        city:
+          type: string
+          example: Sao Paulo
+        state:
+          type: string
+          example: SP
+        zip:
+          type: string
+          example: "01311000"
+      required:
+        - "street"
+        - "number"
+        - "city"
+        - "state"
+        - "zip"
+    BankAccount:
+      properties:
+        agency:
+          type: string
+          example: "60883"
+        accountNumber:
+          type: string
+          example: "3413"
+        digit:
+          type: string
+          example: "1"
+      required:
+        - "agency"
+        - "accountNumber"
+        - "digits"
+    CreditCard:
+      properties:
+        code:
+          type: string
+          example: "5118598797832798"
+        name:
+          type: string
+          example: "ARIEL S DOS SANTOS"
+        expirationDate:
+          type: string
+          format: datetime
+          example: "1994-11-05T08:15:30-05:00"
+        verifyingDigits:
+          type: string
+          example: "183"
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        serviceType:
+          type: string
+          example: Tosa
+        price:
+          type: number
+          format: double
+          example: 89.90
+        userId:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+      required:
+        - "id"
+        - "serviceType"
+        - "price"
+        - "userId"
+    Request:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        userId:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        serviceId:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        date:
+          type: string
+          format: datetime
+          example: "1994-11-05T08:15:30-05:00"
+      required:
+        - "id"
+        - "userId"
+        - "serviceId"
+        - "date"
+    IdList:
+      type: array
+      items:
+        type: string
+        format: uuid
+        example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+    UserData:
+      properties:
+        firstName:
+          type: string
+          example: Ariel
+        lastName:
+          type: string
+          example: Silva dos Santos
+        email:
+          type: string
+          format: email
+          example: ariel.silva@ipets.com
+        password:
+          type: string
+          format: password
+        address:
+          $ref: "#/components/schemas/Address"
+        bankAccount:
+          $ref: "#/components/schemas/BankAccount"
+        creditCards:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreditCard"
+        avatar:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
+      required:
+        - "id"
+        - "firstName"
+        - "lastName"
+        - "email"
+        - "address"
+    ServiceData:
+      type: object
+      properties:
+        serviceType:
+          type: string
+          example: Tosa
+        price:
+          type: number
+          format: double
+          example: 89.90
+        userId:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+      required:
+        - "serviceType"
+        - "price"
+        - "userId"
+    RequestData:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        serviceId:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        date:
+          type: string
+          format: datetime
+          example: "1994-11-05T08:15:30-05:00"
+      required:
+        - "id"
+        - "userId"
+        - "serviceId"
+        - "date"
