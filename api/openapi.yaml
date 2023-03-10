@@ -1,0 +1,657 @@
+openapi: 3.0.3
+info:
+  description: |-
+    Especificacao dos contratos disponibilizados pelo servidor do aplicativo iPets, um
+    aplicativo para contratacao de servicos para pets.
+    Parte do projeto do grupo 21 na disciplina de Engenharia de Software, ministrada em
+    2023.1 na UFABC.
+  title: iPets
+  version: 0.1.0
+servers:
+- url: http://localhost:8080/
+tags:
+- description: Usados na interface para gerir usuarios da plataforma.
+  name: Usuarios
+- description: Usados na interface de usuarios prestadores para gerir servicos na
+    plataforma.
+  name: Servicos
+- description: Usados na interface de usuarios consumidores para gerir servicos na
+    plataforma.
+  name: Pedidos
+- description: Usados nas interfaces para utilidade ou para habilitar outras funcionalidades.
+  name: Utilidades
+paths:
+  /users:
+    put:
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+        description: Dados do usuario a ser cadastrado
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Usuario consumidor criado com sucesso
+        "400":
+          description: Usuario consumidor requisitado possui dados invalidos
+      summary: Cadastra os dados de um novo usuario na plataforma
+      tags:
+      - Usuarios
+      x-eov-operation-handler: controllers/UsuariosController
+  /users/{userId}:
+    delete:
+      operationId: removeUser
+      parameters:
+      - description: ID do usuario
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Usuario consumidor removido com sucesso para o ID
+        "404":
+          description: Usuario consumidor inexistente para o ID
+      summary: Remove os dados de um usuario existente por ID na plataforma
+      tags:
+      - Usuarios
+      x-eov-operation-handler: controllers/UsuariosController
+    get:
+      operationId: getUser
+      parameters:
+      - description: ID do usuario
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Usuario consumidor obtido com sucesso para o ID
+        "404":
+          description: Usuario consumidor inexistente para o ID
+      summary: Obtem os dados de um usuario existente por ID na plataforma
+      tags:
+      - Usuarios
+      x-eov-operation-handler: controllers/UsuariosController
+    patch:
+      operationId: setUser
+      parameters:
+      - description: ID do usuario
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserData'
+        description: Dados do usuario a ser atualizado
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Usuario consumidor obtido com sucesso para o ID
+        "404":
+          description: Usuario consumidor inexistente para o ID
+      summary: Atualiza os dados de usuario existente por ID na plataforma
+      tags:
+      - Usuarios
+      x-eov-operation-handler: controllers/UsuariosController
+  /services:
+    put:
+      operationId: createService
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceData'
+        description: Dado do servico a ser cadastrado
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Servico criado com sucesso
+        "400":
+          description: Servico requisitado possui dados invalidos
+      summary: Cadastra os dados de um novo servico na plataforma
+      tags:
+      - Servicos
+      x-eov-operation-handler: controllers/ServicosController
+  /services/{serviceId}:
+    delete:
+      operationId: removeService
+      parameters:
+      - description: ID do usuario prestador
+        explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Dados do servico removidos com sucesso
+        "404":
+          description: Servico inexistente para o ID
+      summary: Remove os dados de um servico existente por ID na plataforma
+      tags:
+      - Servicos
+      x-eov-operation-handler: controllers/ServicosController
+    get:
+      operationId: getService
+      parameters:
+      - description: ID do servico
+        explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Dados do servico obtidos com sucesso
+        "404":
+          description: Servico inexistente para o ID
+      summary: Obtem os dados de um servico existente por ID na plataforma
+      tags:
+      - Servicos
+      x-eov-operation-handler: controllers/ServicosController
+    patch:
+      operationId: setService
+      parameters:
+      - description: ID do servico
+        explode: false
+        in: path
+        name: serviceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceData'
+        description: Dado do servico a ser atualizado
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Dados do servico atualizados com sucesso
+        "404":
+          description: Servico inexistente para o ID
+      summary: Atualiza os dados de um servico existente por ID na plataforma
+      tags:
+      - Servicos
+      x-eov-operation-handler: controllers/ServicosController
+  /requests:
+    put:
+      operationId: createRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestData'
+        description: Dado do pedido a ser cadastrado
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+          description: Pedido criado com sucesso
+        "400":
+          description: Pedido requisitado possui dados invalidos
+      summary: Cadastra os dados de um novo pedido na plataforma
+      tags:
+      - Pedidos
+      x-eov-operation-handler: controllers/PedidosController
+  /requests/{requestId}:
+    get:
+      operationId: getRequest
+      parameters:
+      - description: ID do pedido
+        explode: false
+        in: path
+        name: requestId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+          description: Dados do pedido obtidos com sucesso
+        "404":
+          description: Pedido inexistente para o ID
+      summary: Obtem os dados de um pedido existente por ID na plataforma
+      tags:
+      - Pedidos
+      x-eov-operation-handler: controllers/PedidosController
+    patch:
+      operationId: setRequest
+      parameters:
+      - description: ID do pedido
+        explode: false
+        in: path
+        name: requestId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestData'
+        description: Dado do pedido a ser atualizado
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+          description: Dados do pedido atualizados com sucesso
+        "404":
+          description: Pedido inexistente para o ID
+      summary: Atualiza os dados de um pedido existente por ID na plataforma
+      tags:
+      - Pedidos
+      x-eov-operation-handler: controllers/PedidosController
+  /services/ids:
+    get:
+      operationId: getAllServiceIds
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdList'
+          description: IDs obtidos com sucesso
+      summary: Obtem os IDs de todos os servicos existentes na plataforma
+      tags:
+      - Utilidades
+      x-eov-operation-handler: controllers/UtilidadesController
+  /user/{userId}/requests:
+    get:
+      operationId: getRequestsByUserId
+      parameters:
+      - description: ID do usuario prestador
+        explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdList'
+          description: Pedidos obtidos com sucesso para o ID do usuario prestador
+        "404":
+          description: Usuario prestador invalido para o ID
+      summary: Obtem os dados de todos os pedidos de servicos feitos para um usuario
+        existente por ID
+      tags:
+      - Utilidades
+      x-eov-operation-handler: controllers/UtilidadesController
+components:
+  schemas:
+    User:
+      example:
+        bankAccount:
+          agency: "60883"
+          accountNumber: "3413"
+          digit: "1"
+        firstName: Ariel
+        lastName: Silva dos Santos
+        password: password
+        code: "98202023025"
+        address:
+          zip: "01311000"
+          number: "1001"
+          city: Sao Paulo
+          street: Av. Paulista
+          state: SP
+          complement: apto 21
+        creditCards:
+        - code: "5118598797832798"
+          name: ARIEL S DOS SANTOS
+          verifyingDigits: "183"
+          expirationDate: 1994-11-05T08:15:30-05:00
+        - code: "5118598797832798"
+          name: ARIEL S DOS SANTOS
+          verifyingDigits: "183"
+          expirationDate: 1994-11-05T08:15:30-05:00
+        id: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        avatar: !!binary |-
+          VTNkaFoyZGxjaUJ5YjJOcmN3PT0=
+        email: ariel.silva@ipets.com
+      properties:
+        id:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+        code:
+          description: CPF ou CNPJ
+          example: "98202023025"
+          type: string
+        firstName:
+          example: Ariel
+          type: string
+        lastName:
+          example: Silva dos Santos
+          type: string
+        email:
+          example: ariel.silva@ipets.com
+          format: email
+          type: string
+        password:
+          format: password
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        bankAccount:
+          $ref: '#/components/schemas/BankAccount'
+        creditCards:
+          items:
+            $ref: '#/components/schemas/CreditCard'
+          type: array
+        avatar:
+          example: !!binary |-
+            VTNkaFoyZGxjaUJ5YjJOcmN3PT0=
+          format: byte
+          type: string
+      required:
+      - address
+      - email
+      - firstName
+      - id
+      - lastName
+      type: object
+    Address:
+      example:
+        zip: "01311000"
+        number: "1001"
+        city: Sao Paulo
+        street: Av. Paulista
+        state: SP
+        complement: apto 21
+      properties:
+        street:
+          example: Av. Paulista
+          type: string
+        number:
+          example: "1001"
+          type: string
+        complement:
+          example: apto 21
+          type: string
+        city:
+          example: Sao Paulo
+          type: string
+        state:
+          example: SP
+          type: string
+        zip:
+          example: "01311000"
+          type: string
+      required:
+      - city
+      - number
+      - state
+      - street
+      - zip
+      type: object
+    BankAccount:
+      example:
+        agency: "60883"
+        accountNumber: "3413"
+        digit: "1"
+      properties:
+        agency:
+          example: "60883"
+          type: string
+        accountNumber:
+          example: "3413"
+          type: string
+        digit:
+          example: "1"
+          type: string
+      required:
+      - accountNumber
+      - agency
+      - digits
+    CreditCard:
+      example:
+        code: "5118598797832798"
+        name: ARIEL S DOS SANTOS
+        verifyingDigits: "183"
+        expirationDate: 1994-11-05T08:15:30-05:00
+      properties:
+        code:
+          example: "5118598797832798"
+          type: string
+        name:
+          example: ARIEL S DOS SANTOS
+          type: string
+        expirationDate:
+          example: 1994-11-05T08:15:30-05:00
+          format: datetime
+          type: string
+        verifyingDigits:
+          example: "183"
+          type: string
+    Service:
+      example:
+        serviceType: Tosa
+        price: 89.9
+        id: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        userId: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+      properties:
+        id:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+        serviceType:
+          example: Tosa
+          type: string
+        price:
+          example: 89.9
+          format: double
+          type: number
+        userId:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+      required:
+      - id
+      - price
+      - serviceType
+      - userId
+      type: object
+    Request:
+      example:
+        date: 1994-11-05T08:15:30-05:00
+        id: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        serviceId: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        userId: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+      properties:
+        id:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+        userId:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+        serviceId:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+        date:
+          example: 1994-11-05T08:15:30-05:00
+          format: datetime
+          type: string
+      required:
+      - date
+      - id
+      - serviceId
+      - userId
+      type: object
+    IdList:
+      items:
+        example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        format: uuid
+        type: string
+      type: array
+    UserData:
+      example:
+        bankAccount:
+          agency: "60883"
+          accountNumber: "3413"
+          digit: "1"
+        firstName: Ariel
+        lastName: Silva dos Santos
+        password: password
+        address:
+          zip: "01311000"
+          number: "1001"
+          city: Sao Paulo
+          street: Av. Paulista
+          state: SP
+          complement: apto 21
+        creditCards:
+        - code: "5118598797832798"
+          name: ARIEL S DOS SANTOS
+          verifyingDigits: "183"
+          expirationDate: 1994-11-05T08:15:30-05:00
+        - code: "5118598797832798"
+          name: ARIEL S DOS SANTOS
+          verifyingDigits: "183"
+          expirationDate: 1994-11-05T08:15:30-05:00
+        avatar: !!binary |-
+          VTNkaFoyZGxjaUJ5YjJOcmN3PT0=
+        email: ariel.silva@ipets.com
+      properties:
+        firstName:
+          example: Ariel
+          type: string
+        lastName:
+          example: Silva dos Santos
+          type: string
+        email:
+          example: ariel.silva@ipets.com
+          format: email
+          type: string
+        password:
+          format: password
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        bankAccount:
+          $ref: '#/components/schemas/BankAccount'
+        creditCards:
+          items:
+            $ref: '#/components/schemas/CreditCard'
+          type: array
+        avatar:
+          example: !!binary |-
+            VTNkaFoyZGxjaUJ5YjJOcmN3PT0=
+          format: byte
+          type: string
+      required:
+      - address
+      - email
+      - firstName
+      - id
+      - lastName
+    ServiceData:
+      example:
+        serviceType: Tosa
+        price: 89.9
+        userId: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+      properties:
+        serviceType:
+          example: Tosa
+          type: string
+        price:
+          example: 89.9
+          format: double
+          type: number
+        userId:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+      required:
+      - price
+      - serviceType
+      - userId
+      type: object
+    RequestData:
+      example:
+        date: 1994-11-05T08:15:30-05:00
+        serviceId: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        userId: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+      properties:
+        userId:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+        serviceId:
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          format: uuid
+          type: string
+        date:
+          example: 1994-11-05T08:15:30-05:00
+          format: datetime
+          type: string
+      required:
+      - date
+      - id
+      - serviceId
+      - userId
+      type: object
