@@ -1,3 +1,8 @@
+# Sugestões:
+# * Separar prestadores e consumidores em dois endpoints diferentes
+# * Criar endpoints só para cadastrar cartões de crédito e contas no banco
+# * Criar objeto representando o pet e endpoints para gerir esses objetos
+
 openapi: 3.0.3
 info:
   title: iPets
@@ -328,9 +333,9 @@ components:
           type: string
           format: email
           example: ariel.silva@ipets.com
-        password:
-          type: string
-          format: password
+        # password:
+        #   type: string
+        #   format: password
         address:
           $ref: "#/components/schemas/Address"
         bankAccount:
@@ -343,6 +348,11 @@ components:
           type: string
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
+        # pets:
+        #   type: array
+        #   items:
+        #     type: string
+        #     format: uuid
       required:
         - "id"
         - "firstName"
@@ -448,6 +458,9 @@ components:
           type: string
           format: datetime
           example: "1994-11-05T08:15:30-05:00"
+        status:
+          type: string
+          example: Rejeitado
       required:
         - "id"
         - "userId"
