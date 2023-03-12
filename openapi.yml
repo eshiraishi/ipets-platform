@@ -52,7 +52,7 @@ paths:
       tags:
         - Usuarios
       summary: Obtem os dados de um usuario existente por ID na plataforma
-      operationId: getUser
+      operationId: getUserById
       parameters:
         - name: userId
           in: path
@@ -73,7 +73,7 @@ paths:
       tags:
         - Usuarios
       summary: Atualiza os dados de usuario existente por ID na plataforma
-      operationId: setUser
+      operationId: updateUserById
       parameters:
         - name: userId
           in: path
@@ -101,7 +101,7 @@ paths:
       tags:
         - Usuarios
       summary: Remove os dados de um usuario existente por ID na plataforma
-      operationId: removeUser
+      operationId: removeUserById
       parameters:
         - name: userId
           in: path
@@ -136,12 +136,24 @@ paths:
                 $ref: "#/components/schemas/Service"
         "400":
           description: Servico requisitado possui dados invalidos
+    get:
+      tags:
+        - Utilidades
+      summary: Obtem todos os servicos existentes na plataforma
+      operationId: getAllServices
+      responses:
+        "200":
+          description: IDs obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceList"
   /services/{serviceId}:
     get:
       tags:
         - Servicos
       summary: Obtem os dados de um servico existente por ID na plataforma
-      operationId: getService
+      operationId: getServiceById
       parameters:
         - name: serviceId
           in: path
@@ -162,7 +174,7 @@ paths:
       tags:
         - Servicos
       summary: Atualiza os dados de um servico existente por ID na plataforma
-      operationId: setService
+      operationId: updateServiceById
       parameters:
         - name: serviceId
           in: path
@@ -190,7 +202,7 @@ paths:
       tags:
         - Servicos
       summary: Remove os dados de um servico existente por ID na plataforma
-      operationId: removeService
+      operationId: removeServiceById
       parameters:
         - name: serviceId
           in: path
@@ -246,7 +258,7 @@ paths:
                 $ref: "#/components/schemas/Request"
         "404":
           description: Pedido inexistente para o ID
-      operationId: getRequest
+      operationId: getRequestById
     patch:
       tags:
         - Pedidos
@@ -274,20 +286,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/RequestData"
-      operationId: setRequest
-  /services/ids:
-    get:
-      tags:
-        - Utilidades
-      summary: Obtem os IDs de todos os servicos existentes na plataforma
-      operationId: getAllServiceIds
-      responses:
-        "200":
-          description: IDs obtidos com sucesso
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IdList"
+      operationId: updateRequestById
   /user/{userId}/requests:
     get:
       tags:
@@ -306,7 +305,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/IdList"
+                $ref: "#/components/schemas/RequestList"
         "404":
           description: Usuario prestador invalido para o ID
       operationId: getRequestsByUserId
@@ -397,10 +396,10 @@ components:
         digit:
           type: string
           example: "1"
-      required:
-        - "agency"
-        - "accountNumber"
-        - "digits"
+      # required:
+      #   - "agency"
+      #   - "accountNumber"
+      #   - "digits"
     CreditCard:
       properties:
         code:
@@ -466,12 +465,20 @@ components:
         - "userId"
         - "serviceId"
         - "date"
-    IdList:
-      type: array
-      items:
-        type: string
-        format: uuid
-        example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+    ServiceList:
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/Service"
+    RequestList:
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/Request"
     UserData:
       properties:
         firstName:
@@ -504,6 +511,7 @@ components:
         - "firstName"
         - "lastName"
         - "email"
+        - "password"
         - "address"
     ServiceData:
       type: object
