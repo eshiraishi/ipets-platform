@@ -1,8 +1,3 @@
-# Sugestões:
-# * Separar prestadores e consumidores em dois endpoints diferentes
-# * Criar endpoints só para cadastrar cartões de crédito e contas no banco
-# * Criar objeto representando o pet e endpoints para gerir esses objetos
-
 openapi: 3.0.3
 info:
   title: iPets
@@ -15,28 +10,122 @@ info:
 servers:
   - url: http://localhost:8080/
 tags:
-  - name: Usuarios
-    description: Usados na interface para gerir usuarios da plataforma.
+  - name: Usuarios prestadores
+    description: Usados na interface para gerir usuarios prestadores da plataforma.
+  - name: Usuarios consumidores
+    description: Usados na interface para gerir usuarios consumidores da plataforma.
   - name: Servicos
     description: Usados na interface de usuarios prestadores para gerir servicos na plataforma.
   - name: Pedidos
     description: Usados na interface de usuarios consumidores para gerir servicos na plataforma.
+  - name: Outros cadastros
+    description: Usados para cadastrar informações auxiliares aos usuarios, servicos e pedidos.
   - name: Utilidades
     description: Usados nas interfaces para utilidade ou para habilitar outras funcionalidades.
 paths:
-  /users:
+  /users/providers:
     put:
       tags:
-        - Usuarios
-      summary: Cadastra os dados de um novo usuario na plataforma
-      operationId: createUser
+        - Usuarios prestadores
+      summary: Cadastra os dados de um novo usuario prestador na plataforma
+      operationId: createUserProvider
       requestBody:
-        description: Dados do usuario a ser cadastrado
+        description: Dados do usuario prestador a ser cadastrado
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserData"
+              $ref: "#/components/schemas/UserProviderData"
+
+      responses:
+        "201":
+          description: Usuario prestador criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProvider"
+        "400":
+          description: Usuario prestador requisitado possui dados invalidos
+  /users/providers/{providerId}:
+    get:
+      tags:
+        - Usuarios prestadores
+      summary: Obtem os dados de um usuario prestador existente por ID na plataforma
+      operationId: getUserProviderById
+      parameters:
+        - name: providerId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario prestador obtido com sucesso para o ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProvider"
+        "404":
+          description: Usuario prestador inexistente para o ID
+    patch:
+      tags:
+        - Usuarios prestadores
+      summary: Atualiza os dados de usuario prestador existente por ID na plataforma
+      operationId: updateUserProviderById
+      parameters:
+        - name: providerId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Dados do usuario prestador a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProviderData"
+      responses:
+        "200":
+          description: Usuario prestador obtido com sucesso para o ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProvider"
+        "404":
+          description: Usuario prestador inexistente para o ID
+    delete:
+      tags:
+        - Usuarios prestadores
+      summary: Remove os dados de um usuario prestador existente por ID na plataforma
+      operationId: removeUserProviderById
+      parameters:
+        - name: providerId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario prestador removido com sucesso para o ID
+        "404":
+          description: Usuario prestador inexistente para o ID
+  /users/consumers:
+    put:
+      tags:
+        - Usuarios consumidores
+      summary: Cadastra os dados de um novo usuario consumidor na plataforma
+      operationId: createUserConsumer
+      requestBody:
+        description: Dados do usuario consumidor a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserConsumerData"
 
       responses:
         "201":
@@ -44,19 +133,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserConsumer"
         "400":
           description: Usuario consumidor requisitado possui dados invalidos
-  /users/{userId}:
+  /users/consumers/{consumerId}:
     get:
       tags:
-        - Usuarios
-      summary: Obtem os dados de um usuario existente por ID na plataforma
-      operationId: getUserById
+        - Usuarios consumidores
+      summary: Obtem os dados de um usuario consumidor existente por ID na plataforma
+      operationId: getUserConsumerById
       parameters:
-        - name: userId
+        - name: consumerId
           in: path
-          description: ID do usuario
+          description: ID do usuario consumidor
           required: true
           schema:
             type: string
@@ -66,46 +155,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserConsumer"
         "404":
           description: Usuario consumidor inexistente para o ID
     patch:
       tags:
-        - Usuarios
-      summary: Atualiza os dados de usuario existente por ID na plataforma
-      operationId: updateUserById
+        - Usuarios consumidores
+      summary: Atualiza os dados de usuario consumidor existente por ID na plataforma
+      operationId: updateUserConsumerById
       parameters:
-        - name: userId
+        - name: consumerId
           in: path
-          description: ID do usuario
+          description: ID do usuario consumidor
           required: true
           schema:
             type: string
       requestBody:
-        description: Dados do usuario a ser atualizado
+        description: Dados do usuario consumidor a ser atualizado
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserData"
+              $ref: "#/components/schemas/UserConsumerData"
       responses:
         "200":
           description: Usuario consumidor obtido com sucesso para o ID
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/UserConsumer"
         "404":
           description: Usuario consumidor inexistente para o ID
     delete:
       tags:
-        - Usuarios
-      summary: Remove os dados de um usuario existente por ID na plataforma
-      operationId: removeUserById
+        - Usuarios consumidores
+      summary: Remove os dados de um usuario consumidor existente por ID na plataforma
+      operationId: removeUserConsumerById
       parameters:
-        - name: userId
+        - name: consumerId
           in: path
-          description: ID do usuario
+          description: ID do usuario consumidor
           required: true
           schema:
             type: string
@@ -114,6 +203,273 @@ paths:
           description: Usuario consumidor removido com sucesso para o ID
         "404":
           description: Usuario consumidor inexistente para o ID
+  /creditCards:
+    put:
+      tags:
+        - Outros cadastros
+      summary: Cadastra os dados de um novo cartao de credito na plataforma
+      operationId: createCreditCard
+      requestBody:
+        description: Dado do cartao de credito a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditCardData"
+      responses:
+        "201":
+          description: Cartao de credito criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditCard"
+        "400":
+          description: Cartao de credito requisitado possui dados invalidos
+  /creditCards/{creditCardId}:
+    get:
+      tags:
+        - Outros cadastros
+      summary: Obtem os dados de um cartao de credito existente por ID na plataforma
+      operationId: getCreditCardById
+      parameters:
+        - name: creditCardId
+          in: path
+          description: ID do cartao de credito
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do cartao de credito obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditCard"
+        "404":
+          description: Cartao de credito inexistente para o ID
+    patch:
+      tags:
+        - Outros cadastros
+      summary: Atualiza os dados de um cartao de credito existente por ID na plataforma
+      operationId: updateCreditCardById
+      parameters:
+        - name: creditCardId
+          in: path
+          description: ID do cartao de credito
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Dado do cartao de credito a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditCardData"
+      responses:
+        "200":
+          description: Dados do cartao de credito atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditCard"
+        "404":
+          description: Cartao de credito inexistente para o ID
+    delete:
+      tags:
+        - Outros cadastros
+      summary: Remove os dados de um cartao de credito existente por ID na plataforma
+      operationId: removeCreditCardById
+      parameters:
+        - name: creditCardId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do cartao de credito removidos com sucesso
+        "404":
+          description: Cartao de credito inexistente para o ID
+  /bankAccounts:
+    put:
+      tags:
+        - Outros cadastros
+      summary: Cadastra os dados de um novo conta de banco na plataforma
+      operationId: createBankAccount
+      requestBody:
+        description: Dado do conta de banco a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankAccountData"
+      responses:
+        "201":
+          description: Conta de banco criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccount"
+        "400":
+          description: Conta de banco requisitado possui dados invalidos
+  /bankAccounts/{bankAccountId}:
+    get:
+      tags:
+        - Outros cadastros
+      summary: Obtem os dados de um conta de banco existente por ID na plataforma
+      operationId: getBankAccountById
+      parameters:
+        - name: bankAccountId
+          in: path
+          description: ID do conta de banco
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do conta de banco obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccount"
+        "404":
+          description: Conta de banco inexistente para o ID
+    patch:
+      tags:
+        - Outros cadastros
+      summary: Atualiza os dados de um conta de banco existente por ID na plataforma
+      operationId: updateBankAccountById
+      parameters:
+        - name: bankAccountId
+          in: path
+          description: ID do conta de banco
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Dado do conta de banco a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankAccountData"
+      responses:
+        "200":
+          description: Dados do conta de banco atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccount"
+        "404":
+          description: Conta de banco inexistente para o ID
+    delete:
+      tags:
+        - Outros cadastros
+      summary: Remove os dados de um conta de banco existente por ID na plataforma
+      operationId: removeBankAccountById
+      parameters:
+        - name: bankAccountId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do conta de banco removidos com sucesso
+        "404":
+          description: Conta de banco inexistente para o ID
+  /addresses:
+    put:
+      tags:
+        - Outros cadastros
+      summary: Cadastra os dados de um novo endereco na plataforma
+      operationId: createAddress
+      requestBody:
+        description: Dado do endereco a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddressData"
+      responses:
+        "201":
+          description: Endereco criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "400":
+          description: Endereco requisitado possui dados invalidos
+  /addresses/{addressId}:
+    get:
+      tags:
+        - Outros cadastros
+      summary: Obtem os dados de um endereco existente por ID na plataforma
+      operationId: getAddressById
+      parameters:
+        - name: addressId
+          in: path
+          description: ID do endereco
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do endereco obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "404":
+          description: Endereco inexistente para o ID
+    patch:
+      tags:
+        - Outros cadastros
+      summary: Atualiza os dados de um endereco existente por ID na plataforma
+      operationId: updateAddressById
+      parameters:
+        - name: addressId
+          in: path
+          description: ID do endereco
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Dado do endereco a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddressData"
+      responses:
+        "200":
+          description: Dados do endereco atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        "404":
+          description: Endereco inexistente para o ID
+    delete:
+      tags:
+        - Outros cadastros
+      summary: Remove os dados de um endereco existente por ID na plataforma
+      operationId: removeAddressById
+      parameters:
+        - name: addressId
+          in: path
+          description: ID do usuario prestador
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dados do endereco removidos com sucesso
+        "404":
+          description: Endereco inexistente para o ID
   /services:
     put:
       tags:
@@ -287,13 +643,13 @@ paths:
             schema:
               $ref: "#/components/schemas/RequestData"
       operationId: updateRequestById
-  /user/{userId}/requests:
+  /user/{providerId}/requests:
     get:
       tags:
         - Utilidades
-      summary: Obtem os dados de todos os pedidos de servicos feitos para um usuario existente por ID
+      summary: Obtem os dados de todos os pedidos de servicos feitos para um usuario prestador existente por ID
       parameters:
-        - name: userId
+        - name: providerId
           in: path
           description: ID do usuario prestador
           required: true
@@ -308,26 +664,112 @@ paths:
                 $ref: "#/components/schemas/RequestList"
         "404":
           description: Usuario prestador invalido para o ID
-      operationId: getRequestsByUserId
+      operationId: getRequestsByProviderId
+  /pets:
+    put:
+      tags:
+        - Outros cadastros
+      summary: Cadastra os dados de um novo pet na plataforma
+      operationId: createPet
+      requestBody:
+        description: Dados do pet a ser cadastrado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetData"
+      responses:
+        "201":
+          description: Pet criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pet"
+        "400":
+          description: Pet requisitado possui dados invalidos
+  /pets/{petId}:
+    get:
+      tags:
+        - Outros cadastros
+      summary: Obtem os dados de um pet existente por ID na plataforma
+      operationId: getPetById
+      parameters:
+        - name: petId
+          in: path
+          description: ID do pet
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Pet obtido com sucesso para o ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pet"
+        "404":
+          description: Pet inexistente para o ID
+    patch:
+      tags:
+        - Outros cadastros
+      summary: Atualiza os dados de pet existente por ID na plataforma
+      operationId: updatePetById
+      parameters:
+        - name: petId
+          in: path
+          description: ID do pet
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Dados do pet a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetData"
+      responses:
+        "200":
+          description: Pet obtido com sucesso para o ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pet"
+        "404":
+          description: Pet inexistente para o ID
+    delete:
+      tags:
+        - Outros cadastros
+      summary: Remove os dados de um pet existente por ID na plataforma
+      operationId: removePetById
+      parameters:
+        - name: petId
+          in: path
+          description: ID do pet
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Pet removido com sucesso para o ID
+        "404":
+          description: Pet inexistente para o ID
 components:
   schemas:
-    User:
+    UserProvider:
       type: object
       properties:
         id:
           type: string
           format: uuid
           example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
-        code:
-          description: CPF ou CNPJ
+        cnpj:
+          description: CNPJ
           type: string
-          example: "98202023025"
-        firstName:
+          example: "19303761000140"
+        name:
           type: string
-          example: Ariel
-        lastName:
-          type: string
-          example: Silva dos Santos
+          example: "IPETS SERVICOS SA"
         email:
           type: string
           format: email
@@ -339,10 +781,10 @@ components:
           $ref: "#/components/schemas/Address"
         bankAccount:
           $ref: "#/components/schemas/BankAccount"
-        creditCards:
-          type: array
-          items:
-            $ref: "#/components/schemas/CreditCard"
+        # creditCards:
+        #   type: array
+        #   items:
+        #     $ref: "#/components/schemas/CreditCard"
         avatar:
           type: string
           format: byte
@@ -354,13 +796,61 @@ components:
         #     format: uuid
       required:
         - "id"
-        - "firstName"
-        - "lastName"
+        - "name"
+        - "code"
         - "email"
         - "address"
+        - "bankAccount"
+    UserConsumer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        cpf:
+          description: CPF
+          type: string
+          example: "98202023025"
+        name:
+          type: string
+          example: Ariel Silva dos Santos
+        email:
+          type: string
+          format: email
+          example: ariel.silva@ipets.com
+        # password:
+        #   type: string
+        #   format: password
+        address:
+          $ref: "#/components/schemas/Address"
+        # bankAccount:
+        #   $ref: "#/components/schemas/BankAccount"
+        creditCard:
+          $ref: "#/components/schemas/CreditCard"
+        avatar:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
+        pets:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+        - "id"
+        - "name"
+        - "email"
+        - "address"
+        - "creditCard"
+        - "pets"
     Address:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
         street:
           type: string
           example: Av. Paulista
@@ -380,6 +870,7 @@ components:
           type: string
           example: "01311000"
       required:
+        - "id"
         - "street"
         - "number"
         - "city"
@@ -387,6 +878,10 @@ components:
         - "zip"
     BankAccount:
       properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
         agency:
           type: string
           example: "60883"
@@ -396,12 +891,17 @@ components:
         digit:
           type: string
           example: "1"
-      # required:
-      #   - "agency"
-      #   - "accountNumber"
-      #   - "digits"
+      required:
+        - "id"
+        - "agency"
+        - "accountNumber"
+        - "digits"
     CreditCard:
       properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
         code:
           type: string
           example: "5118598797832798"
@@ -429,7 +929,7 @@ components:
           type: number
           format: double
           example: 89.90
-        userId:
+        providerId:
           type: string
           format: uuid
           example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
@@ -437,7 +937,7 @@ components:
         - "id"
         - "serviceType"
         - "price"
-        - "userId"
+        - "providerId"
     Request:
       type: object
       properties:
@@ -445,7 +945,7 @@ components:
           type: string
           format: uuid
           example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
-        userId:
+        consumerId:
           type: string
           format: uuid
           example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
@@ -462,57 +962,50 @@ components:
           example: Rejeitado
       required:
         - "id"
-        - "userId"
+        - "consumerId"
         - "serviceId"
         - "date"
+    Pet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+        name:
+          type: string
+          example: "Scooby"
+        species:
+          type: string
+          example: "Cachorro"
+        race:
+          type: string
+          example: Dogue Alemao
+        age:
+          type: integer
+          example: 5
+        description:
+          type: string
+          example: Possui pedigree e foi comprado do criador "Chacara dos Dogues Alemaes".
+      required:
+        - "id"
+        - "name"
+        - "species"
+        - "race"
+        - "age"
+        - "description"
     ServiceList:
       properties:
         data:
           type: array
           items:
-            type: object
             $ref: "#/components/schemas/Service"
     RequestList:
       properties:
         data:
           type: array
           items:
-            type: object
             $ref: "#/components/schemas/Request"
-    UserData:
-      properties:
-        firstName:
-          type: string
-          example: Ariel
-        lastName:
-          type: string
-          example: Silva dos Santos
-        email:
-          type: string
-          format: email
-          example: ariel.silva@ipets.com
-        password:
-          type: string
-          format: password
-        address:
-          $ref: "#/components/schemas/Address"
-        bankAccount:
-          $ref: "#/components/schemas/BankAccount"
-        creditCards:
-          type: array
-          items:
-            $ref: "#/components/schemas/CreditCard"
-        avatar:
-          type: string
-          format: byte
-          example: U3dhZ2dlciByb2Nrcw==
-      required:
-        - "id"
-        - "firstName"
-        - "lastName"
-        - "email"
-        - "password"
-        - "address"
     ServiceData:
       type: object
       properties:
@@ -523,18 +1016,18 @@ components:
           type: number
           format: double
           example: 89.90
-        userId:
+        providerId:
           type: string
           format: uuid
           example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
       required:
         - "serviceType"
         - "price"
-        - "userId"
+        - "providerId"
     RequestData:
       type: object
       properties:
-        userId:
+        consumerId:
           type: string
           format: uuid
           example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
@@ -548,6 +1041,160 @@ components:
           example: "1994-11-05T08:15:30-05:00"
       required:
         - "id"
-        - "userId"
+        - "consumerId"
         - "serviceId"
         - "date"
+    UserProviderData:
+      type: object
+      properties:
+        cnpj:
+          description: CNPJ
+          type: string
+          example: "19303761000140"
+        name:
+          type: string
+          example: "IPETS SERVICOS SA"
+        email:
+          type: string
+          format: email
+          example: ariel.silva@ipets.com
+        password:
+          type: string
+          format: password
+        address:
+          $ref: "#/components/schemas/Address"
+        bankAccount:
+          $ref: "#/components/schemas/BankAccount"
+        avatar:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
+      required:
+        - "cnpj"
+        - "name"
+        - "email"
+        - "address"
+        - "bankAccount"
+    UserConsumerData:
+      type: object
+      properties:
+        cpf:
+          description: CPF
+          type: string
+          example: "98202023025"
+        name:
+          type: string
+          example: Ariel Silva dos Santos
+        email:
+          type: string
+          format: email
+          example: ariel.silva@ipets.com
+        password:
+          type: string
+          format: password
+        address:
+          $ref: "#/components/schemas/Address"
+        creditCard:
+          $ref: "#/components/schemas/CreditCard"
+        avatar:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
+        pets:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+        - "cpf"
+        - "name"
+        - "email"
+        - "password"
+        - "address"
+        - "creditCard"
+        - "pets"
+    CreditCardData:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "5118598797832798"
+        name:
+          type: string
+          example: "ARIEL S DOS SANTOS"
+        expirationDate:
+          type: string
+          format: datetime
+          example: "1994-11-05T08:15:30-05:00"
+        verifyingDigits:
+          type: string
+          example: "183"
+      required:
+        - "code"
+        - "name"
+        - "expirationDate"
+        - "verifyingDigits"
+    BankAccountData:
+      properties:
+        agency:
+          type: string
+          example: "60883"
+        accountNumber:
+          type: string
+          example: "3413"
+        digit:
+          type: string
+          example: "1"
+      required:
+        - "agency"
+        - "accountNumber"
+        - "digits"
+    AddressData:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Av. Paulista
+        number:
+          type: string
+          example: "1001"
+        complement:
+          type: string
+          example: apto 21
+        city:
+          type: string
+          example: Sao Paulo
+        state:
+          type: string
+          example: SP
+        zip:
+          type: string
+          example: "01311000"
+      required:
+        - "street"
+        - "number"
+        - "city"
+        - "state"
+        - "zip"
+    PetData:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Scooby"
+        species:
+          type: string
+          example: "Cachorro"
+        race:
+          type: string
+          example: Dogue Alemao
+        age:
+          type: integer
+          example: 5
+        description:
+          type: string
+          example: Possui pedigree e foi comprado do criador "Chacara dos Dogues Alemaes".
+      required:
+        - "name"
+        - "species"
+        - "age"
