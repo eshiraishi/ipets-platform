@@ -46,19 +46,14 @@ paths:
                 $ref: "#/components/schemas/UserProvider"
         "400":
           description: Usuario prestador requisitado possui dados invalidos
-  /users/providers/{providerId}:
+  /users/providers/{objectId}:
     get:
       tags:
         - Usuarios prestadores
       summary: Obtem os dados de um usuario prestador existente por ID na plataforma
       operationId: getUserProviderById
       parameters:
-        - name: providerId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Usuario prestador obtido com sucesso para o ID
@@ -74,12 +69,7 @@ paths:
       summary: Atualiza os dados de usuario prestador existente por ID na plataforma
       operationId: updateUserProviderById
       parameters:
-        - name: providerId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       requestBody:
         description: Dados do usuario prestador a ser atualizado
         required: true
@@ -102,12 +92,7 @@ paths:
       summary: Remove os dados de um usuario prestador existente por ID na plataforma
       operationId: removeUserProviderById
       parameters:
-        - name: providerId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Usuario prestador removido com sucesso para o ID
@@ -136,19 +121,14 @@ paths:
                 $ref: "#/components/schemas/UserConsumer"
         "400":
           description: Usuario consumidor requisitado possui dados invalidos
-  /users/consumers/{consumerId}:
+  /users/consumers/{objectId}:
     get:
       tags:
         - Usuarios consumidores
       summary: Obtem os dados de um usuario consumidor existente por ID na plataforma
       operationId: getUserConsumerById
       parameters:
-        - name: consumerId
-          in: path
-          description: ID do usuario consumidor
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Usuario consumidor obtido com sucesso para o ID
@@ -164,12 +144,7 @@ paths:
       summary: Atualiza os dados de usuario consumidor existente por ID na plataforma
       operationId: updateUserConsumerById
       parameters:
-        - name: consumerId
-          in: path
-          description: ID do usuario consumidor
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       requestBody:
         description: Dados do usuario consumidor a ser atualizado
         required: true
@@ -192,12 +167,7 @@ paths:
       summary: Remove os dados de um usuario consumidor existente por ID na plataforma
       operationId: removeUserConsumerById
       parameters:
-        - name: consumerId
-          in: path
-          description: ID do usuario consumidor
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Usuario consumidor removido com sucesso para o ID
@@ -225,19 +195,14 @@ paths:
                 $ref: "#/components/schemas/CreditCard"
         "400":
           description: Cartao de credito requisitado possui dados invalidos
-  /creditCards/{creditCardId}:
+  /creditCards/{objectId}:
     get:
       tags:
         - Outros cadastros
       summary: Obtem os dados de um cartao de credito existente por ID na plataforma
       operationId: getCreditCardById
       parameters:
-        - name: creditCardId
-          in: path
-          description: ID do cartao de credito
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do cartao de credito obtidos com sucesso
@@ -253,12 +218,7 @@ paths:
       summary: Atualiza os dados de um cartao de credito existente por ID na plataforma
       operationId: updateCreditCardById
       parameters:
-        - name: creditCardId
-          in: path
-          description: ID do cartao de credito
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       requestBody:
         description: Dado do cartao de credito a ser atualizado
         required: true
@@ -281,12 +241,7 @@ paths:
       summary: Remove os dados de um cartao de credito existente por ID na plataforma
       operationId: removeCreditCardById
       parameters:
-        - name: creditCardId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do cartao de credito removidos com sucesso
@@ -314,19 +269,14 @@ paths:
                 $ref: "#/components/schemas/BankAccount"
         "400":
           description: Conta de banco requisitado possui dados invalidos
-  /bankAccounts/{bankAccountId}:
+  /bankAccounts/{objectId}:
     get:
       tags:
         - Outros cadastros
       summary: Obtem os dados de um conta de banco existente por ID na plataforma
       operationId: getBankAccountById
       parameters:
-        - name: bankAccountId
-          in: path
-          description: ID do conta de banco
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do conta de banco obtidos com sucesso
@@ -342,12 +292,7 @@ paths:
       summary: Atualiza os dados de um conta de banco existente por ID na plataforma
       operationId: updateBankAccountById
       parameters:
-        - name: bankAccountId
-          in: path
-          description: ID do conta de banco
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       requestBody:
         description: Dado do conta de banco a ser atualizado
         required: true
@@ -370,12 +315,7 @@ paths:
       summary: Remove os dados de um conta de banco existente por ID na plataforma
       operationId: removeBankAccountById
       parameters:
-        - name: bankAccountId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do conta de banco removidos com sucesso
@@ -403,19 +343,14 @@ paths:
                 $ref: "#/components/schemas/Address"
         "400":
           description: Endereco requisitado possui dados invalidos
-  /addresses/{addressId}:
+  /addresses/{objectId}:
     get:
       tags:
         - Outros cadastros
       summary: Obtem os dados de um endereco existente por ID na plataforma
       operationId: getAddressById
       parameters:
-        - name: addressId
-          in: path
-          description: ID do endereco
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do endereco obtidos com sucesso
@@ -431,12 +366,7 @@ paths:
       summary: Atualiza os dados de um endereco existente por ID na plataforma
       operationId: updateAddressById
       parameters:
-        - name: addressId
-          in: path
-          description: ID do endereco
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       requestBody:
         description: Dado do endereco a ser atualizado
         required: true
@@ -459,12 +389,7 @@ paths:
       summary: Remove os dados de um endereco existente por ID na plataforma
       operationId: removeAddressById
       parameters:
-        - name: addressId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do endereco removidos com sucesso
@@ -504,19 +429,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceList"
-  /services/{serviceId}:
+  /services/{objectId}:
     get:
       tags:
         - Servicos
       summary: Obtem os dados de um servico existente por ID na plataforma
       operationId: getServiceById
       parameters:
-        - name: serviceId
-          in: path
-          description: ID do servico
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do servico obtidos com sucesso
@@ -532,12 +452,7 @@ paths:
       summary: Atualiza os dados de um servico existente por ID na plataforma
       operationId: updateServiceById
       parameters:
-        - name: serviceId
-          in: path
-          description: ID do servico
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       requestBody:
         description: Dado do servico a ser atualizado
         required: true
@@ -560,12 +475,7 @@ paths:
       summary: Remove os dados de um servico existente por ID na plataforma
       operationId: removeServiceById
       parameters:
-        - name: serviceId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do servico removidos com sucesso
@@ -593,18 +503,13 @@ paths:
                 $ref: "#/components/schemas/Request"
         "400":
           description: Pedido requisitado possui dados invalidos
-  /requests/{requestId}:
+  /requests/{objectId}:
     get:
       tags:
         - Pedidos
       summary: Obtem os dados de um pedido existente por ID na plataforma
       parameters:
-        - name: requestId
-          in: path
-          description: ID do pedido
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do pedido obtidos com sucesso
@@ -620,12 +525,7 @@ paths:
         - Pedidos
       summary: Atualiza os dados de um pedido existente por ID na plataforma
       parameters:
-        - name: requestId
-          in: path
-          description: ID do pedido
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Dados do pedido atualizados com sucesso
@@ -643,18 +543,13 @@ paths:
             schema:
               $ref: "#/components/schemas/RequestData"
       operationId: updateRequestById
-  /user/{providerId}/requests:
+  /user/{objectId}/requests:
     get:
       tags:
         - Utilidades
       summary: Obtem os dados de todos os pedidos de servicos feitos para um usuario prestador existente por ID
       parameters:
-        - name: providerId
-          in: path
-          description: ID do usuario prestador
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Pedidos obtidos com sucesso para o ID do usuario prestador
@@ -687,19 +582,14 @@ paths:
                 $ref: "#/components/schemas/Pet"
         "400":
           description: Pet requisitado possui dados invalidos
-  /pets/{petId}:
+  /pets/{objectId}:
     get:
       tags:
         - Outros cadastros
       summary: Obtem os dados de um pet existente por ID na plataforma
       operationId: getPetById
       parameters:
-        - name: petId
-          in: path
-          description: ID do pet
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Pet obtido com sucesso para o ID
@@ -715,12 +605,7 @@ paths:
       summary: Atualiza os dados de pet existente por ID na plataforma
       operationId: updatePetById
       parameters:
-        - name: petId
-          in: path
-          description: ID do pet
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       requestBody:
         description: Dados do pet a ser atualizado
         required: true
@@ -743,12 +628,7 @@ paths:
       summary: Remove os dados de um pet existente por ID na plataforma
       operationId: removePetById
       parameters:
-        - name: petId
-          in: path
-          description: ID do pet
-          required: true
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ObjectId"
       responses:
         "200":
           description: Pet removido com sucesso para o ID
@@ -756,17 +636,25 @@ paths:
           description: Pet inexistente para o ID
 components:
   schemas:
+    ObjectId:
+      type: string
+      pattern: '^[a-fA-F\d]{24}$'
+      example: 45cbc4a0e4123f6920000002
+    Cpf:
+      type: string
+      pattern: '\d{11}'
+      example: "98202023025"
+    Cnpj:
+      type: string
+      pattern: '\d{14}'
+      example: "31846757000124"
     UserProvider:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         cnpj:
-          description: CNPJ
-          type: string
-          example: "19303761000140"
+          $ref: "#/components/schemas/Cnpj"
         name:
           type: string
           example: "IPETS SERVICOS SA"
@@ -805,13 +693,9 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         cpf:
-          description: CPF
-          type: string
-          example: "98202023025"
+          $ref: "#/components/schemas/Cpf"
         name:
           type: string
           example: Ariel Silva dos Santos
@@ -848,9 +732,7 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         street:
           type: string
           example: Av. Paulista
@@ -879,9 +761,7 @@ components:
     BankAccount:
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         agency:
           type: string
           example: "60883"
@@ -899,9 +779,7 @@ components:
     CreditCard:
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         code:
           type: string
           example: "5118598797832798"
@@ -919,9 +797,7 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         serviceType:
           type: string
           example: Tosa
@@ -930,9 +806,7 @@ components:
           format: double
           example: 89.90
         providerId:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
       required:
         - "id"
         - "serviceType"
@@ -942,17 +816,11 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         consumerId:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         serviceId:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         date:
           type: string
           format: datetime
@@ -969,9 +837,7 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         name:
           type: string
           example: "Scooby"
@@ -1017,9 +883,7 @@ components:
           format: double
           example: 89.90
         providerId:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
       required:
         - "serviceType"
         - "price"
@@ -1028,13 +892,9 @@ components:
       type: object
       properties:
         consumerId:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         serviceId:
-          type: string
-          format: uuid
-          example: 9cd94d37-3b45-4d66-a4ac-1ee904a87491
+          $ref: "#/components/schemas/ObjectId"
         date:
           type: string
           format: datetime
@@ -1048,9 +908,7 @@ components:
       type: object
       properties:
         cnpj:
-          description: CNPJ
-          type: string
-          example: "19303761000140"
+          $ref: "#/components/schemas/Cnpj"
         name:
           type: string
           example: "IPETS SERVICOS SA"
@@ -1079,9 +937,7 @@ components:
       type: object
       properties:
         cpf:
-          description: CPF
-          type: string
-          example: "98202023025"
+          $ref: "#/components/schemas/Cpf"
         name:
           type: string
           example: Ariel Silva dos Santos
@@ -1198,3 +1054,10 @@ components:
         - "name"
         - "species"
         - "age"
+  parameters:
+    ObjectId:
+      name: objectId
+      in: path
+      description: ID do objeto
+      required: true
+      $ref: "#/components/schemas/ObjectId"
