@@ -1060,4 +1060,5 @@ components:
       in: path
       description: ID do objeto
       required: true
-      $ref: "#/components/schemas/ObjectId"
+      schema:
+        $ref: "#/components/schemas/ObjectId"
