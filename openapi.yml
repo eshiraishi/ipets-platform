@@ -666,9 +666,9 @@ components:
         #   type: string
         #   format: password
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: "#/components/schemas/ObjectId"
         bankAccount:
-          $ref: "#/components/schemas/BankAccount"
+          $ref: "#/components/schemas/ObjectId"
         # creditCards:
         #   type: array
         #   items:
@@ -707,11 +707,11 @@ components:
         #   type: string
         #   format: password
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: "#/components/schemas/ObjectId"
         # bankAccount:
         #   $ref: "#/components/schemas/BankAccount"
         creditCard:
-          $ref: "#/components/schemas/CreditCard"
+          $ref: "#/components/schemas/ObjectId"
         avatar:
           type: string
           format: byte
@@ -719,8 +719,7 @@ components:
         pets:
           type: array
           items:
-            type: string
-            format: uuid
+            $ref: "#/components/schemas/ObjectId"
       required:
         - "id"
         - "name"
@@ -920,9 +919,9 @@ components:
           type: string
           format: password
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: "#/components/schemas/ObjectId"
         bankAccount:
-          $ref: "#/components/schemas/BankAccount"
+          $ref: "#/components/schemas/ObjectId"
         avatar:
           type: string
           format: byte
@@ -949,9 +948,9 @@ components:
           type: string
           format: password
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: "#/components/schemas/ObjectId"
         creditCard:
-          $ref: "#/components/schemas/CreditCard"
+          $ref: "#/components/schemas/ObjectId"
         avatar:
           type: string
           format: byte
