@@ -1,2 +1,0 @@
-fastapi-code-generator
--r requirements.txt

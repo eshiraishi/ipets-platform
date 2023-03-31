@@ -31,18 +31,18 @@ from .models import (
 )
 
 app = FastAPI(
-    title='iPets',
-    description='Especificacao dos contratos disponibilizados pelo servidor do aplicativo iPets, um\naplicativo para contratacao de servicos para pets.\nParte do projeto do grupo 21 na disciplina de Engenharia de Software, ministrada em\n2023.1 na UFABC.',
-    version='0.1.0',
-    servers=[{'url': 'http://localhost:8080/'}],
+    title="iPets",
+    description="Especificacao dos contratos disponibilizados pelo servidor do aplicativo iPets, um\naplicativo para contratacao de servicos para pets.\nParte do projeto do grupo 21 na disciplina de Engenharia de Software, ministrada em\n2023.1 na UFABC.",
+    version="0.1.0",
+    servers=[{"url": "http://localhost:8080/"}],
 )
 
 
 @app.put(
-    '/addresses',
+    "/addresses",
     response_model=None,
-    responses={'201': {'model': Address}},
-    tags=['Outros cadastros'],
+    responses={"201": {"model": Address}},
+    tags=["Outros cadastros"],
 )
 def create_address(body: AddressData) -> Union[None, Address]:
     """
@@ -51,17 +51,17 @@ def create_address(body: AddressData) -> Union[None, Address]:
     pass
 
 
-@app.get('/addresses/{object_id}', response_model=Address, tags=['Outros cadastros'])
-def get_address_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> Address:
+@app.get("/addresses/{object_id}", response_model=Address, tags=["Outros cadastros"])
+def get_address_by_id(object_id: ObjectId = Path(alias="objectId")) -> Address:
     """
     Obtem os dados de um endereco existente por ID na plataforma
     """
     pass
 
 
-@app.patch('/addresses/{object_id}', response_model=Address, tags=['Outros cadastros'])
+@app.patch("/addresses/{object_id}", response_model=Address, tags=["Outros cadastros"])
 def update_address_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: AddressData = ...
+    body: AddressData, object_id: ObjectId = Path(alias="objectId")
 ) -> Address:
     """
     Atualiza os dados de um endereco existente por ID na plataforma
@@ -69,8 +69,8 @@ def update_address_by_id(
     pass
 
 
-@app.delete('/addresses/{object_id}', response_model=None, tags=['Outros cadastros'])
-def remove_address_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> None:
+@app.delete("/addresses/{object_id}", response_model=None, tags=["Outros cadastros"])
+def remove_address_by_id(object_id: ObjectId = Path(alias="objectId")) -> None:
     """
     Remove os dados de um endereco existente por ID na plataforma
     """
@@ -78,10 +78,10 @@ def remove_address_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> N
 
 
 @app.put(
-    '/bankAccounts',
+    "/bankAccounts",
     response_model=None,
-    responses={'201': {'model': BankAccount}},
-    tags=['Outros cadastros'],
+    responses={"201": {"model": BankAccount}},
+    tags=["Outros cadastros"],
 )
 def create_bank_account(body: BankAccountData) -> Union[None, BankAccount]:
     """
@@ -91,11 +91,9 @@ def create_bank_account(body: BankAccountData) -> Union[None, BankAccount]:
 
 
 @app.get(
-    '/bankAccounts/{object_id}', response_model=BankAccount, tags=['Outros cadastros']
+    "/bankAccounts/{object_id}", response_model=BankAccount, tags=["Outros cadastros"]
 )
-def get_bank_account_by_id(
-    object_id: ObjectId = Path(..., alias='objectId')
-) -> BankAccount:
+def get_bank_account_by_id(object_id: ObjectId = Path(alias="objectId")) -> BankAccount:
     """
     Obtem os dados de um conta de banco existente por ID na plataforma
     """
@@ -103,10 +101,10 @@ def get_bank_account_by_id(
 
 
 @app.patch(
-    '/bankAccounts/{object_id}', response_model=BankAccount, tags=['Outros cadastros']
+    "/bankAccounts/{object_id}", response_model=BankAccount, tags=["Outros cadastros"]
 )
 def update_bank_account_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: BankAccountData = ...
+    body: BankAccountData, object_id: ObjectId = Path(alias="objectId")
 ) -> BankAccount:
     """
     Atualiza os dados de um conta de banco existente por ID na plataforma
@@ -114,10 +112,8 @@ def update_bank_account_by_id(
     pass
 
 
-@app.delete('/bankAccounts/{object_id}', response_model=None, tags=['Outros cadastros'])
-def remove_bank_account_by_id(
-    object_id: ObjectId = Path(..., alias='objectId')
-) -> None:
+@app.delete("/bankAccounts/{object_id}", response_model=None, tags=["Outros cadastros"])
+def remove_bank_account_by_id(object_id: ObjectId = Path(alias="objectId")) -> None:
     """
     Remove os dados de um conta de banco existente por ID na plataforma
     """
@@ -125,10 +121,10 @@ def remove_bank_account_by_id(
 
 
 @app.put(
-    '/creditCards',
+    "/creditCards",
     response_model=None,
-    responses={'201': {'model': CreditCard}},
-    tags=['Outros cadastros'],
+    responses={"201": {"model": CreditCard}},
+    tags=["Outros cadastros"],
 )
 def create_credit_card(body: CreditCardData) -> Union[None, CreditCard]:
     """
@@ -138,11 +134,9 @@ def create_credit_card(body: CreditCardData) -> Union[None, CreditCard]:
 
 
 @app.get(
-    '/creditCards/{object_id}', response_model=CreditCard, tags=['Outros cadastros']
+    "/creditCards/{object_id}", response_model=CreditCard, tags=["Outros cadastros"]
 )
-def get_credit_card_by_id(
-    object_id: ObjectId = Path(..., alias='objectId')
-) -> CreditCard:
+def get_credit_card_by_id(object_id: ObjectId = Path(alias="objectId")) -> CreditCard:
     """
     Obtem os dados de um cartao de credito existente por ID na plataforma
     """
@@ -150,10 +144,10 @@ def get_credit_card_by_id(
 
 
 @app.patch(
-    '/creditCards/{object_id}', response_model=CreditCard, tags=['Outros cadastros']
+    "/creditCards/{object_id}", response_model=CreditCard, tags=["Outros cadastros"]
 )
 def update_credit_card_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: CreditCardData = ...
+    body: CreditCardData, object_id: ObjectId = Path(alias="objectId")
 ) -> CreditCard:
     """
     Atualiza os dados de um cartao de credito existente por ID na plataforma
@@ -161,8 +155,8 @@ def update_credit_card_by_id(
     pass
 
 
-@app.delete('/creditCards/{object_id}', response_model=None, tags=['Outros cadastros'])
-def remove_credit_card_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> None:
+@app.delete("/creditCards/{object_id}", response_model=None, tags=["Outros cadastros"])
+def remove_credit_card_by_id(object_id: ObjectId = Path(alias="objectId")) -> None:
     """
     Remove os dados de um cartao de credito existente por ID na plataforma
     """
@@ -170,10 +164,10 @@ def remove_credit_card_by_id(object_id: ObjectId = Path(..., alias='objectId')) 
 
 
 @app.put(
-    '/pets',
+    "/pets",
     response_model=None,
-    responses={'201': {'model': Pet}},
-    tags=['Outros cadastros'],
+    responses={"201": {"model": Pet}},
+    tags=["Outros cadastros"],
 )
 def create_pet(body: PetData) -> Union[None, Pet]:
     """
@@ -182,17 +176,17 @@ def create_pet(body: PetData) -> Union[None, Pet]:
     pass
 
 
-@app.get('/pets/{object_id}', response_model=Pet, tags=['Outros cadastros'])
-def get_pet_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> Pet:
+@app.get("/pets/{object_id}", response_model=Pet, tags=["Outros cadastros"])
+def get_pet_by_id(object_id: ObjectId = Path(alias="objectId")) -> Pet:
     """
     Obtem os dados de um pet existente por ID na plataforma
     """
     pass
 
 
-@app.patch('/pets/{object_id}', response_model=Pet, tags=['Outros cadastros'])
+@app.patch("/pets/{object_id}", response_model=Pet, tags=["Outros cadastros"])
 def update_pet_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: PetData = ...
+    body: PetData, object_id: ObjectId = Path(alias="objectId")
 ) -> Pet:
     """
     Atualiza os dados de pet existente por ID na plataforma
@@ -200,8 +194,8 @@ def update_pet_by_id(
     pass
 
 
-@app.delete('/pets/{object_id}', response_model=None, tags=['Outros cadastros'])
-def remove_pet_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> None:
+@app.delete("/pets/{object_id}", response_model=None, tags=["Outros cadastros"])
+def remove_pet_by_id(object_id: ObjectId = Path(alias="objectId")) -> None:
     """
     Remove os dados de um pet existente por ID na plataforma
     """
@@ -209,10 +203,10 @@ def remove_pet_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> None:
 
 
 @app.put(
-    '/requests',
+    "/requests",
     response_model=None,
-    responses={'201': {'model': Request}},
-    tags=['Pedidos'],
+    responses={"201": {"model": Request}},
+    tags=["Pedidos"],
 )
 def create_request(body: RequestData) -> Union[None, Request]:
     """
@@ -221,17 +215,17 @@ def create_request(body: RequestData) -> Union[None, Request]:
     pass
 
 
-@app.get('/requests/{object_id}', response_model=Request, tags=['Pedidos'])
-def get_request_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> Request:
+@app.get("/requests/{object_id}", response_model=Request, tags=["Pedidos"])
+def get_request_by_id(object_id: ObjectId = Path(alias="objectId")) -> Request:
     """
     Obtem os dados de um pedido existente por ID na plataforma
     """
     pass
 
 
-@app.patch('/requests/{object_id}', response_model=Request, tags=['Pedidos'])
+@app.patch("/requests/{object_id}", response_model=Request, tags=["Pedidos"])
 def update_request_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: RequestData = ...
+    body: RequestData, object_id: ObjectId = Path(alias="objectId")
 ) -> Request:
     """
     Atualiza os dados de um pedido existente por ID na plataforma
@@ -240,10 +234,10 @@ def update_request_by_id(
 
 
 @app.put(
-    '/services',
+    "/services",
     response_model=None,
-    responses={'201': {'model': Service}},
-    tags=['Servicos'],
+    responses={"201": {"model": Service}},
+    tags=["Servicos"],
 )
 def create_service(body: ServiceData) -> Union[None, Service]:
     """
@@ -252,7 +246,7 @@ def create_service(body: ServiceData) -> Union[None, Service]:
     pass
 
 
-@app.get('/services', response_model=ServiceList, tags=['Utilidades'])
+@app.get("/services", response_model=ServiceList, tags=["Utilidades"])
 def get_all_services() -> ServiceList:
     """
     Obtem todos os servicos existentes na plataforma
@@ -260,17 +254,17 @@ def get_all_services() -> ServiceList:
     pass
 
 
-@app.get('/services/{object_id}', response_model=Service, tags=['Servicos'])
-def get_service_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> Service:
+@app.get("/services/{object_id}", response_model=Service, tags=["Servicos"])
+def get_service_by_id(object_id: ObjectId = Path(alias="objectId")) -> Service:
     """
     Obtem os dados de um servico existente por ID na plataforma
     """
     pass
 
 
-@app.patch('/services/{object_id}', response_model=Service, tags=['Servicos'])
+@app.patch("/services/{object_id}", response_model=Service, tags=["Servicos"])
 def update_service_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: ServiceData = ...
+    body: ServiceData, object_id: ObjectId = Path(alias="objectId")
 ) -> Service:
     """
     Atualiza os dados de um servico existente por ID na plataforma
@@ -278,17 +272,17 @@ def update_service_by_id(
     pass
 
 
-@app.delete('/services/{object_id}', response_model=None, tags=['Servicos'])
-def remove_service_by_id(object_id: ObjectId = Path(..., alias='objectId')) -> None:
+@app.delete("/services/{object_id}", response_model=None, tags=["Servicos"])
+def remove_service_by_id(object_id: ObjectId = Path(alias="objectId")) -> None:
     """
     Remove os dados de um servico existente por ID na plataforma
     """
     pass
 
 
-@app.get('/user/{object_id}/requests', response_model=RequestList, tags=['Utilidades'])
+@app.get("/user/{object_id}/requests", response_model=RequestList, tags=["Utilidades"])
 def get_requests_by_provider_id(
-    object_id: ObjectId = Path(..., alias='objectId')
+    object_id: ObjectId = Path(alias="objectId"),
 ) -> RequestList:
     """
     Obtem os dados de todos os pedidos de servicos feitos para um usuario prestador existente por ID
@@ -297,10 +291,10 @@ def get_requests_by_provider_id(
 
 
 @app.put(
-    '/users/consumers',
+    "/users/consumers",
     response_model=None,
-    responses={'201': {'model': UserConsumer}},
-    tags=['Usuarios consumidores'],
+    responses={"201": {"model": UserConsumer}},
+    tags=["Usuarios consumidores"],
 )
 def create_user_consumer(body: UserConsumerData) -> Union[None, UserConsumer]:
     """
@@ -310,12 +304,12 @@ def create_user_consumer(body: UserConsumerData) -> Union[None, UserConsumer]:
 
 
 @app.get(
-    '/users/consumers/{object_id}',
+    "/users/consumers/{object_id}",
     response_model=UserConsumer,
-    tags=['Usuarios consumidores'],
+    tags=["Usuarios consumidores"],
 )
 def get_user_consumer_by_id(
-    object_id: ObjectId = Path(..., alias='objectId')
+    object_id: ObjectId = Path(alias="objectId"),
 ) -> UserConsumer:
     """
     Obtem os dados de um usuario consumidor existente por ID na plataforma
@@ -324,12 +318,12 @@ def get_user_consumer_by_id(
 
 
 @app.patch(
-    '/users/consumers/{object_id}',
+    "/users/consumers/{object_id}",
     response_model=UserConsumer,
-    tags=['Usuarios consumidores'],
+    tags=["Usuarios consumidores"],
 )
 def update_user_consumer_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: UserConsumerData = ...
+    body: UserConsumerData, object_id: ObjectId = Path(alias="objectId")
 ) -> UserConsumer:
     """
     Atualiza os dados de usuario consumidor existente por ID na plataforma
@@ -338,11 +332,9 @@ def update_user_consumer_by_id(
 
 
 @app.delete(
-    '/users/consumers/{object_id}', response_model=None, tags=['Usuarios consumidores']
+    "/users/consumers/{object_id}", response_model=None, tags=["Usuarios consumidores"]
 )
-def remove_user_consumer_by_id(
-    object_id: ObjectId = Path(..., alias='objectId')
-) -> None:
+def remove_user_consumer_by_id(object_id: ObjectId = Path(alias="objectId")) -> None:
     """
     Remove os dados de um usuario consumidor existente por ID na plataforma
     """
@@ -350,10 +342,10 @@ def remove_user_consumer_by_id(
 
 
 @app.put(
-    '/users/providers',
+    "/users/providers",
     response_model=None,
-    responses={'201': {'model': UserProvider}},
-    tags=['Usuarios prestadores'],
+    responses={"201": {"model": UserProvider}},
+    tags=["Usuarios prestadores"],
 )
 def create_user_provider(body: UserProviderData) -> Union[None, UserProvider]:
     """
@@ -363,12 +355,12 @@ def create_user_provider(body: UserProviderData) -> Union[None, UserProvider]:
 
 
 @app.get(
-    '/users/providers/{object_id}',
+    "/users/providers/{object_id}",
     response_model=UserProvider,
-    tags=['Usuarios prestadores'],
+    tags=["Usuarios prestadores"],
 )
 def get_user_provider_by_id(
-    object_id: ObjectId = Path(..., alias='objectId')
+    object_id: ObjectId = Path(alias="objectId"),
 ) -> UserProvider:
     """
     Obtem os dados de um usuario prestador existente por ID na plataforma
@@ -377,12 +369,12 @@ def get_user_provider_by_id(
 
 
 @app.patch(
-    '/users/providers/{object_id}',
+    "/users/providers/{object_id}",
     response_model=UserProvider,
-    tags=['Usuarios prestadores'],
+    tags=["Usuarios prestadores"],
 )
 def update_user_provider_by_id(
-    object_id: ObjectId = Path(..., alias='objectId'), body: UserProviderData = ...
+    body: UserProviderData, object_id: ObjectId = Path(alias="objectId")
 ) -> UserProvider:
     """
     Atualiza os dados de usuario prestador existente por ID na plataforma
@@ -391,11 +383,9 @@ def update_user_provider_by_id(
 
 
 @app.delete(
-    '/users/providers/{object_id}', response_model=None, tags=['Usuarios prestadores']
+    "/users/providers/{object_id}", response_model=None, tags=["Usuarios prestadores"]
 )
-def remove_user_provider_by_id(
-    object_id: ObjectId = Path(..., alias='objectId')
-) -> None:
+def remove_user_provider_by_id(object_id: ObjectId = Path(alias="objectId")) -> None:
     """
     Remove os dados de um usuario prestador existente por ID na plataforma
     """
