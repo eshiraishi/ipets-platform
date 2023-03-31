@@ -9,7 +9,7 @@ python -m pip install --upgrade
 pip install virtualenv
 python -m virtualenv virtualenv
 .\virtualenv\Scripts\activate
-pip install -r requirements.txt
+pip install -r dev-requirements.txt
 fastapi-codegen --input openapi.yml --output app
 ```
 

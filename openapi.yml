@@ -797,9 +797,12 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/ObjectId"
-        serviceType:
+        name:
           type: string
           example: Tosa
+        description:
+          type: string
+          example: Oferecemos servicos de tosa para cachorros de pequeno e medio porte.
         price:
           type: number
           format: double
@@ -808,7 +811,7 @@ components:
           $ref: "#/components/schemas/ObjectId"
       required:
         - "id"
-        - "serviceType"
+        - "name"
         - "price"
         - "providerId"
     Request:
@@ -874,9 +877,12 @@ components:
     ServiceData:
       type: object
       properties:
-        serviceType:
+        name:
           type: string
           example: Tosa
+        description:
+          type: string
+          example: Oferecemos servicos de tosa para cachorros de pequeno e medio porte.
         price:
           type: number
           format: double
@@ -884,7 +890,7 @@ components:
         providerId:
           $ref: "#/components/schemas/ObjectId"
       required:
-        - "serviceType"
+        - "name"
         - "price"
         - "providerId"
     RequestData:
