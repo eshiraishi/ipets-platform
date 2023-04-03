@@ -38,7 +38,7 @@ app = FastAPI(
 
 
 @app.put("/requests", response_model=RequestModel, tags=["Pedidos"])
-async def create_request(body: UpdateRequestModel) -> JSONResponse:
+async def create_request(body: UpdateRequestModel):  # -> JSONResponse:
     """
     Cadastra os dados de um novo pedido na plataforma
     """
@@ -47,23 +47,21 @@ async def create_request(body: UpdateRequestModel) -> JSONResponse:
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_document)
 
 
-@app.get("/requests/{object_id}", response_model=RequestModel, tags=["Pedidos"])
-async def get_request_by_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+@app.get("/requests/{id}", response_model=RequestModel, tags=["Pedidos"])
+async def get_request_by_id(id: constr(regex=REGEX_OBJECT_ID)):  # -> JSONResponse:
     """
     Obtem os dados de um pedido existente por ID na plataforma
     """
-    if (document := await db["requests"].find_one({"_id": object_id})) is not None:
-        return JSONResponse(content=document)
-    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(object_id))
+    if (document := await db["requests"].find_one({"_id": id})) is not None:
+        # return JSONResponse(content=document)
+        return document
+    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(id))
 
 
-@app.patch("/requests/{object_id}", response_model=RequestModel, tags=["Pedidos"])
+@app.patch("/requests/{id}", response_model=RequestModel, tags=["Pedidos"])
 async def update_request_by_id(
-    body: UpdateRequestModel,
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+    body: UpdateRequestModel, id: constr(regex=REGEX_OBJECT_ID)
+):  # -> JSONResponse:
     """
     Atualiza os dados de um pedido existente por ID na plataforma
     """
@@ -71,26 +69,23 @@ async def update_request_by_id(
         key: value for key, value in body.dict().items() if value is not None
     }
     if len(document) >= 1:
-        update_result = await db["requests"].update_one(
-            {"_id": object_id}, {"$set": document}
-        )
+        update_result = await db["requests"].update_one({"_id": id}, {"$set": document})
 
         if update_result.modified_count == 1:
             if (
-                updated_document := await db["requests"].find_one({"_id": object_id})
+                updated_document := await db["requests"].find_one({"_id": id})
             ) is not None:
-                return JSONResponse(content=updated_document)
+                return updated_document
+                # return JSONResponse(content=updated_document)
 
-    if (
-        existing_document := await db["requests"].find_one({"_id": object_id})
-    ) is not None:
+    if (existing_document := await db["requests"].find_one({"_id": id})) is not None:
         return existing_document
 
-    raise HTTPException(status=404, detail=TEMPLATE_404.format(object_id))
+    raise HTTPException(status=404, detail=TEMPLATE_404.format(id))
 
 
 @app.put("/services", response_model=ServiceModel, tags=["Servicos"])
-async def create_service(body: UpdateServiceModel) -> JSONResponse:
+async def create_service(body: UpdateServiceModel):  # -> JSONResponse:
     """
     Cadastra os dados de um novo servico na plataforma
     """
@@ -100,7 +95,7 @@ async def create_service(body: UpdateServiceModel) -> JSONResponse:
 
 
 @app.get("/services", response_model=ServiceListModel, tags=["Utilidades"])
-async def get_all_services() -> JSONResponse:
+async def get_all_services():  # -> JSONResponse:
     """
     Obtem todos os servicos existentes na plataforma
     """
@@ -110,26 +105,25 @@ async def get_all_services() -> JSONResponse:
     service_list: ServiceListModel = ServiceListModel(
         data=[ServiceModel.parse_obj(service) for service in services]
     )
-    return JSONResponse(content=service_list)
+    return service_list
+    # return JSONResponse(content=service_list)
 
 
-@app.get("/services/{object_id}", response_model=ServiceModel, tags=["Servicos"])
-async def get_service_by_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+@app.get("/services/{id}", response_model=ServiceModel, tags=["Servicos"])
+async def get_service_by_id(id: constr(regex=REGEX_OBJECT_ID)):  # -> JSONResponse:
     """
     Obtem os dados de um servico existente por ID na plataforma
     """
-    if (document := await db["services"].find_one({"_id": object_id})) is not None:
-        return JSONResponse(content=document)
-    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(object_id))
+    if (document := await db["services"].find_one({"_id": id})) is not None:
+        return document
+        # return JSONResponse(content=document)
+    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(id))
 
 
-@app.patch("/services/{object_id}", response_model=ServiceModel, tags=["Servicos"])
+@app.patch("/services/{id}", response_model=ServiceModel, tags=["Servicos"])
 async def update_service_by_id(
-    body: UpdateServiceModel,
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+    body: UpdateServiceModel, id: constr(regex=REGEX_OBJECT_ID)
+):  # -> JSONResponse:
     """
     Atualiza os dados de um servico existente por ID na plataforma
     """
@@ -137,45 +131,38 @@ async def update_service_by_id(
         key: value for key, value in body.dict().items() if value is not None
     }
     if len(document) >= 1:
-        update_result = await db["services"].update_one(
-            {"_id": object_id}, {"$set": document}
-        )
+        update_result = await db["services"].update_one({"_id": id}, {"$set": document})
 
         if update_result.modified_count == 1:
             if (
-                updated_document := await db["services"].find_one({"_id": object_id})
+                updated_document := await db["services"].find_one({"_id": id})
             ) is not None:
-                return JSONResponse(content=updated_document)
+                return updated_document
+                # return JSONResponse(content=updated_document)
 
-    if (
-        existing_document := await db["services"].find_one({"_id": object_id})
-    ) is not None:
+    if (existing_document := await db["services"].find_one({"_id": id})) is not None:
         return existing_document
 
-    raise HTTPException(status=404, detail=TEMPLATE_404.format(object_id))
+    raise HTTPException(status=404, detail=TEMPLATE_404.format(id))
 
 
-@app.delete("/services/{object_id}", response_model=None, tags=["Servicos"])
-async def remove_service_by_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> None:
+@app.delete("/services/{id}", response_model=None, tags=["Servicos"])
+async def remove_service_by_id(id: constr(regex=REGEX_OBJECT_ID)):  # -> None:
     """
     Remove os dados de um servico existente por ID na plataforma
     """
-    delete_result = await db["services"].delete_one({"_id": object_id})
+    delete_result = await db["services"].delete_one({"_id": id})
 
     if delete_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(object_id))
+    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(id))
 
 
-@app.get(
-    "/user/{object_id}/requests", response_model=RequestListModel, tags=["Utilidades"]
-)
+@app.get("/user/{id}/requests", response_model=RequestListModel, tags=["Utilidades"])
 async def get_requests_by_provider_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+    id: constr(regex=REGEX_OBJECT_ID),
+):  # -> JSONResponse:
     """
     Obtem os dados de todos os pedidos de servicos feitos para um usuario prestador existente por ID
     """
@@ -186,7 +173,7 @@ async def get_requests_by_provider_id(
 @app.put(
     "/users/consumers", response_model=ConsumerModel, tags=["Usuarios consumidores"]
 )
-async def create_consumer(body: UpdateConsumerModel) -> JSONResponse:
+async def create_consumer(body: UpdateConsumerModel):  # -> JSONResponse:
     """
     Cadastra os dados de um novo usuario consumidor na plataforma
     """
@@ -196,30 +183,28 @@ async def create_consumer(body: UpdateConsumerModel) -> JSONResponse:
 
 
 @app.get(
-    "/users/consumers/{object_id}",
+    "/users/consumers/{id}",
     response_model=ConsumerModel,
     tags=["Usuarios consumidores"],
 )
-async def get_consumer_by_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+async def get_consumer_by_id(id: constr(regex=REGEX_OBJECT_ID)):  # -> JSONResponse:
     """
     Obtem os dados de um usuario consumidor existente por ID na plataforma
     """
-    if (document := await db["consumers"].find_one({"_id": object_id})) is not None:
-        return JSONResponse(content=document)
-    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(object_id))
+    if (document := await db["consumers"].find_one({"_id": id})) is not None:
+        return document
+        # return JSONResponse(content=document)
+    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(id))
 
 
 @app.patch(
-    "/users/consumers/{object_id}",
+    "/users/consumers/{id}",
     response_model=ConsumerModel,
     tags=["Usuarios consumidores"],
 )
 async def update_consumer_by_id(
-    body: UpdateConsumerModel,
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+    body: UpdateConsumerModel, id: constr(regex=REGEX_OBJECT_ID)
+):  # -> JSONResponse:
     """
     Atualiza os dados de usuario consumidor existente por ID na plataforma
     """
@@ -228,44 +213,41 @@ async def update_consumer_by_id(
     }
     if len(document) >= 1:
         update_result = await db["consumers"].update_one(
-            {"_id": object_id}, {"$set": document}
+            {"_id": id}, {"$set": document}
         )
 
         if update_result.modified_count == 1:
             if (
-                updated_document := await db["consumers"].find_one({"_id": object_id})
+                updated_document := await db["consumers"].find_one({"_id": id})
             ) is not None:
-                return JSONResponse(content=updated_document)
+                return updated_document
+                # return JSONResponse(content=updated_document)
 
-    if (
-        existing_document := await db["consumers"].find_one({"_id": object_id})
-    ) is not None:
+    if (existing_document := await db["consumers"].find_one({"_id": id})) is not None:
         return existing_document
 
-    raise HTTPException(status=404, detail=TEMPLATE_404.format(object_id))
+    raise HTTPException(status=404, detail=TEMPLATE_404.format(id))
 
 
 @app.delete(
-    "/users/consumers/{object_id}", response_model=None, tags=["Usuarios consumidores"]
+    "/users/consumers/{id}", response_model=None, tags=["Usuarios consumidores"]
 )
-async def remove_consumer_by_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> None:
+async def remove_consumer_by_id(id: constr(regex=REGEX_OBJECT_ID)):  # -> None:
     """
     Remove os dados de um usuario consumidor existente por ID na plataforma
     """
-    delete_result = await db["consumers"].delete_one({"_id": object_id})
+    delete_result = await db["consumers"].delete_one({"_id": id})
 
     if delete_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(object_id))
+    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(id))
 
 
 @app.put(
     "/users/providers", response_model=ProviderModel, tags=["Usuarios prestadores"]
 )
-async def create_provider(body: UpdateProviderModel) -> JSONResponse:
+async def create_provider(body: UpdateProviderModel):  # -> JSONResponse:
     """
     Cadastra os dados de um novo usuario prestador na plataforma
     """
@@ -275,30 +257,28 @@ async def create_provider(body: UpdateProviderModel) -> JSONResponse:
 
 
 @app.get(
-    "/users/providers/{object_id}",
+    "/users/providers/{id}",
     response_model=ProviderModel,
     tags=["Usuarios prestadores"],
 )
-async def get_provider_by_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+async def get_provider_by_id(id: constr(regex=REGEX_OBJECT_ID)):  # -> JSONResponse:
     """
     Obtem os dados de um usuario prestador existente por ID na plataforma
     """
-    if (document := await db["providers"].find_one({"_id": object_id})) is not None:
-        return JSONResponse(content=document)
-    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(object_id))
+    if (document := await db["providers"].find_one({"_id": id})) is not None:
+        return document
+        # return JSONResponse(content=document)
+    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(id))
 
 
 @app.patch(
-    "/users/providers/{object_id}",
+    "/users/providers/{id}",
     response_model=ProviderModel,
     tags=["Usuarios prestadores"],
 )
 async def update_provider_by_id(
-    body: UpdateProviderModel,
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> JSONResponse:
+    body: UpdateProviderModel, id: constr(regex=REGEX_OBJECT_ID)
+):  # -> JSONResponse:
     """
     Atualiza os dados de usuario prestador existente por ID na plataforma
     """
@@ -307,35 +287,30 @@ async def update_provider_by_id(
     }
     if len(document) >= 1:
         update_result = await db["providers"].update_one(
-            {"_id": object_id}, {"$set": document}
+            {"_id": id}, {"$set": document}
         )
 
         if update_result.modified_count == 1:
             if (
-                updated_document := await db["providers"].find_one({"_id": object_id})
+                updated_document := await db["providers"].find_one({"_id": id})
             ) is not None:
-                return JSONResponse(content=updated_document)
+                return updated_document
+                # return JSONResponse(content=updated_document)
 
-    if (
-        existing_document := await db["providers"].find_one({"_id": object_id})
-    ) is not None:
+    if (existing_document := await db["providers"].find_one({"_id": id})) is not None:
         return existing_document
 
-    raise HTTPException(status=404, detail=TEMPLATE_404.format(object_id))
+    raise HTTPException(status=404, detail=TEMPLATE_404.format(id))
 
 
-@app.delete(
-    "/users/providers/{object_id}", response_model=None, tags=["Usuarios prestadores"]
-)
-async def remove_provider_by_id(
-    object_id: constr(regex=REGEX_OBJECT_ID) = Path(alias="objectId"),
-) -> None:
+@app.delete("/users/providers/{id}", response_model=None, tags=["Usuarios prestadores"])
+async def remove_provider_by_id(id: constr(regex=REGEX_OBJECT_ID)):  # -> None:
     """
     Remove os dados de um usuario prestador existente por ID na plataforma
     """
-    delete_result = await db["providers"].delete_one({"_id": object_id})
+    delete_result = await db["providers"].delete_one({"_id": id})
 
     if delete_result.deleted_count == 1:
         return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(object_id))
+    raise HTTPException(status_code=404, detail=TEMPLATE_404.format(id))

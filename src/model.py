@@ -4,16 +4,16 @@
 
 from __future__ import annotations
 
-from typing import List, Literal, Optional
+# from typing import List, Literal, Optional
 from bson import ObjectId
-
+from typing import Optional
 from pydantic import BaseModel, EmailStr, Field, SecretStr, constr
 
-REGEX_OBJECT_ID: Literal = r"^[a-fA-F\d]{24}$"
-REGEX_CNPJ: Literal = r"\d{14}"
-REGEX_CPF: Literal = r"\d{11}"
+REGEX_OBJECT_ID: str = r"^[a-fA-F\d]{24}$"
+REGEX_CNPJ: str = r"\d{14}"
+REGEX_CPF: str = r"\d{11}"
 
-TEMPLATE_404: Literal = "Documento inexistente para o id %s"
+TEMPLATE_404: str = "Documento inexistente para o id %s"
 
 
 class PyObjectId(ObjectId):
@@ -33,19 +33,9 @@ class PyObjectId(ObjectId):
 
 
 class UpdateRequestModel(BaseModel):
-    consumerId: Optional[PyObjectId] = Field(
-        None,
-        # default_factory=PyObjectId,
-        alias="_id",
-        example="45cbc4a0e4123f6920000002",
-    )
-    serviceId: Optional[PyObjectId] = Field(
-        None,
-        # default_factory=PyObjectId,
-        alias="_id",
-        example="45cbc4a0e4123f6920000002",
-    )
-    date: Optional[str] = Field(None, example="1994-11-05T08:15:30-05:00")
+    consumerId: Optional[PyObjectId]
+    serviceId: Optional[PyObjectId]
+    date: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -54,15 +44,13 @@ class UpdateRequestModel(BaseModel):
 
 
 class ProviderModel(BaseModel):
-    id: PyObjectId = Field(
-        default_factory=PyObjectId, alias="_id", example="45cbc4a0e4123f6920000002"
-    )
-    cnpj: constr(regex=REGEX_CNPJ) = Field(example="31846757000124")
-    name: str = Field(example="IPETS SERVICOS SA")
-    email: EmailStr = Field(example="ariel.silva@ipets.com")
+    id: PyObjectId
+    cnpj: constr(regex=REGEX_CNPJ)
+    name: str
+    email: EmailStr
     address: Address
     bankAccount: BankAccount
-    avatar: Optional[str] = Field(None, example="U3dhZ2dlciByb2Nrcw==")
+    avatar: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -71,16 +59,14 @@ class ProviderModel(BaseModel):
 
 
 class ConsumerModel(BaseModel):
-    id: PyObjectId = Field(
-        default_factory=PyObjectId, alias="_id", example="45cbc4a0e4123f6920000002"
-    )
-    cpf: constr(regex=REGEX_CPF) = Field(example="98202023025")
-    name: str = Field(example="Ariel Silva dos Santos")
-    email: EmailStr = Field(example="ariel.silva@ipets.com")
+    id: PyObjectId
+    cpf: constr(regex=REGEX_CPF)
+    name: str
+    email: EmailStr
     address: Address
     creditCard: CreditCard
-    avatar: Optional[str] = Field(None, example="U3dhZ2dlciByb2Nrcw==")
-    pets: List[Pet]
+    avatar: Optional[str]
+    pets: list[Pet]
 
     class Config:
         allow_population_by_field_name = True
@@ -89,18 +75,11 @@ class ConsumerModel(BaseModel):
 
 
 class ServiceModel(BaseModel):
-    id: PyObjectId = Field(
-        default_factory=PyObjectId, alias="_id", example="45cbc4a0e4123f6920000002"
-    )
-    name: str = Field(example="Tosa")
-    description: Optional[str] = Field(
-        None,
-        example="Oferecemos servicos de tosa para cachorros de pequeno e medio porte.",
-    )
-    price: float = Field(example=89.9)
-    providerId: PyObjectId = Field(
-        default_factory=PyObjectId, alias="_id", example="45cbc4a0e4123f6920000002"
-    )
+    id: PyObjectId
+    name: str
+    description: Optional[str]
+    price: float
+    providerId: PyObjectId
 
     class Config:
         allow_population_by_field_name = True
@@ -109,17 +88,11 @@ class ServiceModel(BaseModel):
 
 
 class RequestModel(BaseModel):
-    id: PyObjectId = Field(
-        default_factory=PyObjectId, alias="_id", example="45cbc4a0e4123f6920000002"
-    )
-    consumerId: PyObjectId = Field(
-        default_factory=PyObjectId, alias="_id", example="45cbc4a0e4123f6920000002"
-    )
-    serviceId: PyObjectId = Field(
-        default_factory=PyObjectId, alias="_id", example="45cbc4a0e4123f6920000002"
-    )
-    date: str = Field(example="1994-11-05T08:15:30-05:00")
-    status: Optional[str] = Field(None, example="Rejeitado")
+    id: PyObjectId
+    consumerId: PyObjectId
+    serviceId: PyObjectId
+    date: str
+    status: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -128,20 +101,20 @@ class RequestModel(BaseModel):
 
 
 class ServiceListModel(BaseModel):
-    data: List[ServiceModel]
+    data: list[ServiceModel]
 
 
 class RequestListModel(BaseModel):
-    data: List[RequestModel]
+    data: list[RequestModel]
 
 
 class Address(BaseModel):
-    street: str = Field(example="Av. Paulista")
-    number: str = Field(example="1001")
-    complement: Optional[str] = Field(None, example="apto 21")
-    city: str = Field(example="Sao Paulo")
-    state: str = Field(example="SP")
-    zip: str = Field(example="01311000")
+    street: Optional[str]
+    number: Optional[str]
+    complement: Optional[str]
+    city: Optional[str]
+    state: Optional[str]
+    zip: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -150,9 +123,9 @@ class Address(BaseModel):
 
 
 class BankAccount(BaseModel):
-    agency: str = Field(example="60883")
-    accountNumber: str = Field(example="3413")
-    digit: Optional[str] = Field(None, example="1")
+    agency: Optional[str]
+    accountNumber: Optional[str]
+    digit: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -161,10 +134,10 @@ class BankAccount(BaseModel):
 
 
 class CreditCard(BaseModel):
-    code: Optional[str] = Field(None, example="5118598797832798")
-    name: Optional[str] = Field(None, example="ARIEL S DOS SANTOS")
-    expirationDate: Optional[str] = Field(None, example="1994-11-05T08:15:30-05:00")
-    verifyingDigits: Optional[str] = Field(None, example="183")
+    code: Optional[str]
+    name: Optional[str]
+    expirationDate: Optional[str]
+    verifyingDigits: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -173,13 +146,11 @@ class CreditCard(BaseModel):
 
 
 class Pet(BaseModel):
-    name: str = Field(example="Scooby")
-    species: str = Field(example="Cachorro")
-    race: str = Field(example="Dogue Alemao")
-    age: int = Field(example=5)
-    description: str = Field(
-        example='Possui pedigree e foi comprado do criador "Chacara dos Dogues Alemaes".'
-    )
+    name: Optional[str]
+    species: Optional[str]
+    race: Optional[str]
+    age: Optional[int]
+    description: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -188,13 +159,13 @@ class Pet(BaseModel):
 
 
 class UpdateProviderModel(BaseModel):
-    cnpj: Optional[constr(regex=REGEX_CNPJ)] = Field(None, example="31846757000124")
-    name: Optional[str] = Field(None, example="IPETS SERVICOS SA")
-    email: Optional[EmailStr] = Field(None, example="ariel.silva@ipets.com")
-    password: Optional[SecretStr] = Field(None)
-    address: Optional[Address] = Field(None)
-    bankAccount: Optional[BankAccount] = Field(None)
-    avatar: Optional[str] = Field(None, example="U3dhZ2dlciByb2Nrcw==")
+    cnpj: Optional[constr(regex=REGEX_CNPJ)]
+    name: Optional[str]
+    email: Optional[EmailStr]
+    password: Optional[SecretStr]
+    address: Optional[Address]
+    bankAccount: Optional[BankAccount]
+    avatar: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -203,14 +174,14 @@ class UpdateProviderModel(BaseModel):
 
 
 class UpdateConsumerModel(BaseModel):
-    cpf: Optional[constr(regex=REGEX_CPF)] = Field(None, example="98202023025")
-    name: Optional[str] = Field(None, example="Ariel Silva dos Santos")
-    email: Optional[EmailStr] = Field(None, example="ariel.silva@ipets.com")
-    password: Optional[SecretStr] = Field(None)
-    address: Optional[Address] = Field(None)
-    creditCard: Optional[CreditCard] = Field(None)
-    avatar: Optional[str] = Field(None, example="U3dhZ2dlciByb2Nrcw==")
-    pets: Optional[List[Pet]] = Field(None)
+    cpf: Optional[constr(regex=REGEX_CPF)]
+    name: Optional[str]
+    email: Optional[EmailStr]
+    password: Optional[SecretStr]
+    address: Optional[Address]
+    creditCard: Optional[CreditCard]
+    avatar: Optional[str]
+    pets: Optional[list[Pet]]
 
     class Config:
         allow_population_by_field_name = True
@@ -219,18 +190,10 @@ class UpdateConsumerModel(BaseModel):
 
 
 class UpdateServiceModel(BaseModel):
-    name: Optional[str] = Field(None, example="Tosa")
-    description: Optional[str] = Field(
-        None,
-        example="Oferecemos servicos de tosa para cachorros de pequeno e medio porte.",
-    )
-    price: Optional[float] = Field(None, example=89.9)
-    providerId: Optional[PyObjectId] = Field(
-        None,
-        # default_factory=PyObjectId,
-        alias="_id",
-        example="45cbc4a0e4123f6920000002",
-    )
+    name: Optional[str]
+    description: Optional[str]
+    price: Optional[float]
+    providerId: Optional[PyObjectId]
 
     class Config:
         allow_population_by_field_name = True
