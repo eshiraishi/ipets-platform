@@ -1,0 +1,5 @@
+fastapi-code-generator
+black
+flake8
+pip-tools
+-r requirements.in
