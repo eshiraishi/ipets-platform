@@ -13,6 +13,25 @@ pip install -r dev-requirements.txt
 fastapi-codegen --input openapi.yml --output app
 ```
 
+Como  gerar os requirements:
+```bash
+pip install -r dev-requirments.txt
+```
+No windows:
+```bash
+python -m piptools compile requirements.in --resolver=backtracking
+```
+No linux:
+```bash
+pip-compile requirements.in --resolver=backtracking
+```
+
+Como instalar as dependências:
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
 Como iniciar o servidor:
 
 ```shell
