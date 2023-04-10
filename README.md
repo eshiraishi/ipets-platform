@@ -16,5 +16,5 @@ fastapi-codegen --input openapi.yml --output app
 Como iniciar o servidor:
 
 ```shell
-uvicorn app.main:app --reload
+uvicorn src.main:app --reload
 ```

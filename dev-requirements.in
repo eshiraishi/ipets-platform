@@ -1,5 +1,7 @@
-fastapi-code-generator
-black
-flake8
-pip-tools
+black==23.3.0
+flake8==6.0.0
+pip-tools==6.12.3
+httpx==0.23.3
+flake8==6.0.0
+pytest==7.3.0
 -r requirements.in
