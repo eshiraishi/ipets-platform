@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends
-from .controller import provider
+from .controller import provider, service
 from .model.utils import get_database
+
 
 app = FastAPI(
     title="iPets",
@@ -10,3 +11,4 @@ app = FastAPI(
     dependencies=[Depends(get_database)],
 )
 app.include_router(provider.router)
+app.include_router(service.router)
