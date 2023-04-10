@@ -767,6 +767,10 @@ components:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
+        thumbnail:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
       required:
         - "id"
         - "name"
@@ -908,6 +912,10 @@ components:
         description:
           type: string
           example: Possui pedigree e foi comprado do criador "Chacara dos Dogues Alemaes".
+        avatar:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
       required:
         - "id"
         - "name"
@@ -1034,6 +1042,10 @@ components:
           type: string
           format: datetime
           example: "1994-11-05T08:15:30-05:00"
+        thumbnail:
+          type: string
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
       # required:
       #   - "id"
       #   - "consumerId"
