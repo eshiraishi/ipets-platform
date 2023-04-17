@@ -37,3 +37,8 @@ Como iniciar o servidor:
 ```shell
 uvicorn src.main:app --reload
 ```
+
+Como executar os testes (aviso: irá apagar todos os registros):
+```bash
+pytest src/tests --envfile .envrc -x -l --tb=native -v --pdb --cov=src
+```

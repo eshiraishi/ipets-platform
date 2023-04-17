@@ -1,7 +1,11 @@
 from typing import Optional
+from bson import ObjectId
 from pydantic import BaseModel
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
+
+# from fastapi import encoders
+# from bson import ObjectId
 
 
 class Address(BaseModel):
@@ -10,7 +14,7 @@ class Address(BaseModel):
     complement: Optional[str]
     city: Optional[str]
     state: Optional[str]
-    zip: Optional[str]
+    postcode: Optional[str]
 
 
 class BankAccount(BaseModel):
@@ -21,4 +25,45 @@ class BankAccount(BaseModel):
 
 def get_database():
     client = AsyncIOMotorClient(os.environ["MONGODB_URL"])
-    return client.ipetsPlatform
+    return client["ipetsPlatform"]
+
+
+class PyObjectId(ObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if not ObjectId.is_valid(v):
+            raise ValueError("Invalid objectid")
+        return ObjectId(v)
+
+    @classmethod
+    def __modify_schema__(cls, field_schema):
+        field_schema.update(type="string")
+
+
+class CreditCard(BaseModel):
+    code: Optional[str]
+    name: Optional[str]
+    expirationDate: Optional[str]
+    cvv: Optional[str]
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+
+
+class Pet(BaseModel):
+    name: Optional[str]
+    species: Optional[str]
+    race: Optional[str]
+    age: Optional[int]
+    description: Optional[str]
+
+    class Config:
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
