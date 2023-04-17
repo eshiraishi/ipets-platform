@@ -643,7 +643,7 @@ components:
     ProviderModel:
       type: object
       properties:
-        id:
+        doc_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -685,7 +685,7 @@ components:
         #     type: string
         #     format: uuid
       required:
-        - "id"
+        - "doc_id"
         - "name"
         - "cnpj"
         - "password"
@@ -696,7 +696,7 @@ components:
     ConsumerModel:
       type: object
       properties:
-        id:
+        doc_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -738,7 +738,7 @@ components:
           # pattern: '^[a-fA-F\d]{24}$'
           # example: 45cbc4a0e4123f6920000002
       required:
-        - "id"
+        - "doc_id"
         - "name"
         - "cpf"
         - "password"
@@ -749,7 +749,7 @@ components:
     ServiceModel:
       type: object
       properties:
-        id:
+        doc_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -772,14 +772,14 @@ components:
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
       required:
-        - "id"
+        - "doc_id"
         - "name"
         - "price"
         - "providerId"
     RequestModel:
       type: object
       properties:
-        id:
+        doc_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -799,7 +799,7 @@ components:
           type: string
           example: Rejeitado
       required:
-        - "id"
+        - "doc_id"
         - "consumerId"
         - "serviceId"
         - "date"
@@ -822,7 +822,7 @@ components:
     Address:
       type: object
       properties:
-        # id:
+        # doc_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -841,19 +841,19 @@ components:
         state:
           type: string
           example: SP
-        zip:
+        postcode:
           type: string
           example: "01311000"
       required:
-        - "id"
+        - "doc_id"
         - "street"
         - "number"
         - "city"
         - "state"
-        - "zip"
+        - "postcode"
     BankAccount:
       properties:
-        # id:
+        # doc_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -867,13 +867,13 @@ components:
           type: string
           example: "1"
       required:
-        - "id"
+        - "doc_id"
         - "agency"
         - "accountNumber"
         - "digits"
     CreditCard:
       properties:
-        # id:
+        # doc_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -887,13 +887,13 @@ components:
           type: string
           format: datetime
           example: "1994-11-05T08:15:30-05:00"
-        verifyingDigits:
+        cvv:
           type: string
           example: "183"
     Pet:
       type: object
       properties:
-        # id:
+        # doc_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -917,7 +917,7 @@ components:
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
       required:
-        - "id"
+        - "doc_id"
         - "name"
         - "species"
         - "race"
@@ -1047,7 +1047,7 @@ components:
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
       # required:
-      #   - "id"
+      #   - "doc_id"
       #   - "consumerId"
       #   - "serviceId"
       #   - "date"
@@ -1064,14 +1064,14 @@ components:
     #       type: string
     #       format: datetime
     #       example: "1994-11-05T08:15:30-05:00"
-    #     verifyingDigits:
+    #     cvv:
     #       type: string
     #       example: "183"
     #   required:
     #     - "code"
     #     - "name"
     #     - "expirationDate"
-    #     - "verifyingDigits"
+    #     - "cvv"
     # BankAccountData:
     #   properties:
     #     agency:
@@ -1105,7 +1105,7 @@ components:
     #     state:
     #       type: string
     #       example: SP
-    #     zip:
+    #     postcode:
     #       type: string
     #       example: "01311000"
     #   required:
@@ -1113,7 +1113,7 @@ components:
     #     - "number"
     #     - "city"
     #     - "state"
-    #     - "zip"
+    #     - "postcode"
     # PetData:
     #   type: object
     #   properties:
