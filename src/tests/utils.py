@@ -6,10 +6,8 @@ import io
 import base64
 import secrets
 import random
+from logging import getLogger
 
-# from mongomock_motor import AsyncMongoMockClient
-# from ..model.utils import get_database
-# from ..main import app
 from validate_docbr import CNPJ, CPF
 from faker import Faker
 from ..controller.utils import common_parameters
@@ -21,6 +19,8 @@ from ..model.request import RequestModel, UpdateRequestModel
 cnpj = CNPJ()
 cpf = CPF()
 faker = Faker(locale="pt-BR")
+logger = getLogger()
+logger.setLevel("DEBUG")
 
 
 def create_random_b64_image():
@@ -98,31 +98,21 @@ def create_consumer_dict():
     }
 
 
-# async
 def create_service_dict():
     name = random.choice(["Banho", "Tosa", "Banho e Tosa", "Hotel", "Creche"])
-    # await populate_collection("providers", 1)
-    # provider = await get_random_document_from_collection("providers")
     return {
         "name": name,
         "description": f"Oferecemos serviços de {name.lower()} para cachorros de pequeno e médio porte.",  # noqa: E501
         "price": round(random.uniform(1, 100), 1),
-        "providerId": str(ObjectId()),  # provider["_id"]),
+        "providerId": str(ObjectId()),
         "thumbnail": create_random_b64_image(),
     }
 
 
-# async
 def create_request_dict():
-    # await populate_collection("consumers", 1)
-    # consumer = await get_random_document_from_collection("consumers")
-
-    # await populate_collection("services", 1)
-    # services = await get_random_document_from_collection("services")
-
     return {
-        "consumerId": str(ObjectId()),  # consumer["_id"]),
-        "serviceId": str(ObjectId()),  # services["_id"]),
+        "consumerId": str(ObjectId()),
+        "serviceId": str(ObjectId()),
         "date": datetime.now().isoformat(),
         "status": random.choice(["Pendente", "Aceito", "Recusado"]),
     }
@@ -163,10 +153,17 @@ def get_update_model_from_collection(collection_name):
 
 async def populate_collection(collection_name, amount):
     commons = await common_parameters()
-    result = await commons["db"]["providers"].insert_many(
-        [create_dict(collection_name) for _ in range(amount)]
-    )
-    return [str(inserted_id) for inserted_id in result.inserted_ids]
+    assert amount >= 1
+    if amount == 1:
+        result = await commons["db"][collection_name].insert_one(
+            create_dict(collection_name)
+        )
+        return [result.inserted_id]
+    else:
+        result = await commons["db"][collection_name].insert_many(
+            [create_dict(collection_name) for _ in range(amount)]
+        )
+        return [str(inserted_id) for inserted_id in result.inserted_ids]
 
 
 async def clear_collection(collection_name):
@@ -180,3 +177,9 @@ async def get_random_document_from_collection(collection_name):
     pipe = [{"$sample": {"size": 1}}]
     docs = await commons["db"][collection_name].aggregate(pipe).to_list(None)
     return docs[0]
+
+
+async def get_document_by_id(collection_name, doc_id):
+    commons = await common_parameters()
+    document = await commons["db"][collection_name].find_one({"_id": doc_id})
+    return document

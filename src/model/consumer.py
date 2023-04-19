@@ -10,6 +10,7 @@ class ConsumerModel(BaseModel):
     cpf: constr(regex=REGEX_CPF)
     name: str
     email: EmailStr
+    password: str
     address: Address
     creditCard: CreditCard
     avatar: Optional[str]

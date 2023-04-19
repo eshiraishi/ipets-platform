@@ -4,9 +4,6 @@ from pydantic import BaseModel
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 
-# from fastapi import encoders
-# from bson import ObjectId
-
 
 class Address(BaseModel):
     street: Optional[str]
@@ -25,7 +22,7 @@ class BankAccount(BaseModel):
 
 def get_database():
     client = AsyncIOMotorClient(os.environ["MONGODB_URL"])
-    return client["ipetsPlatform"]
+    return client["platform"]
 
 
 class PyObjectId(ObjectId):

@@ -4,10 +4,10 @@ from ..controller.utils import common_parameters
 from .utils import (
     clear_collection,
     populate_collection,
-    get_random_document_from_collection,
     create_dict,
     get_model_from_collection,
     get_update_model_from_collection,
+    get_document_by_id,
 )
 import pytest
 
@@ -26,27 +26,12 @@ def test_GIVEN_valid_document_request_body_WHEN_post_document_THEN_equivalent_do
 ):
     request_body = create_dict(collection)
     response = client.post(url=f"/{collection}", json=request_body)
-    # if isinstance(response.json(), str):
     response_body = json_util.loads(response.json())
-    # else:
-    # response_body = response.json()
 
     get_model_from_collection(collection).parse_obj(response_body)
     del response_body["_id"]
     assert response.status_code == 201
     assert response_body == request_body
-
-
-# @pytest.mark.parametrize("removed_attr",
-# Updateget_model_from_collection(collection).__fields__.keys())
-# def test_GIVEN_invalid_document_request_body_WHEN_post_document_THEN_422(  # noqa: E501
-#     client, removed_attr
-# ):
-#     request_body = create_document_dict()
-#     del request_body[removed_attr]
-#     response = client.post(url=f"/{collection}", json=request_body)
-
-#     assert response.status_code == 422
 
 
 @pytest.mark.asyncio
@@ -108,10 +93,8 @@ async def test_GIVEN_valid_id_WHEN_get_single_document_THEN_equivalent_document(
     client,
     collection,
 ):
-    await clear_collection(collection)
-    await populate_collection(collection, 1)
-    document = await get_random_document_from_collection(collection)
-    response = client.get(url=f"/{collection}/{document['_id']}")
+    document_ids = await populate_collection(collection, 1)
+    response = client.get(url=f"/{collection}/{document_ids[0]}")
     body = response.json()
 
     assert response.status_code == 200
@@ -166,16 +149,15 @@ async def test_GIVEN_unknown_id_WHEN_get_single_document_THEN_404(  # noqa: E501
 async def test_GIVEN_valid_id_and_fully_updated_document_request_body_WHEN_put_document_THEN_equivalent_document(  # noqa: E501
     client, collection
 ):
-    # await clear_collection(collection)
-    await populate_collection(collection, 1)
-    document = await get_random_document_from_collection(collection)
-    doc_id = document["_id"]
+    document_ids = await populate_collection(collection, 1)
     request_body = create_dict(collection)
-    response = client.put(url=f"/{collection}/{doc_id}", json=request_body)
+    response = client.put(
+        url=f"/{collection}/{document_ids[0]}", json=request_body
+    )
     response_body = response.json()
 
     assert response.status_code == 200
-    assert str(doc_id) == response_body["_id"]
+    assert str(document_ids[0]) == response_body["_id"]
 
     get_model_from_collection(collection).parse_obj(response_body)
     del response_body["_id"]
@@ -194,26 +176,26 @@ async def test_GIVEN_valid_id_and_fully_updated_document_request_body_WHEN_put_d
     ],
 )
 async def test_GIVEN_valid_id_and_partially_updated_document_request_body_WHEN_put_document_THEN_equivalent_document(  # noqa: E501
-    client, kept_attr, collection
+    client, collection
 ):
     update_model = get_update_model_from_collection(collection)
     for kept_attr in update_model.__fields__.keys():
-        await clear_collection(collection)
-        await populate_collection(collection, 1)
-        document = await get_random_document_from_collection(collection)
-        doc_id = document["_id"]
+        document_ids = await populate_collection(collection, 1)
         request_body = {
             k: v for k, v in create_dict(collection).items() if k != kept_attr
         }
-        response = client.put(url=f"/{collection}/{doc_id}", json=request_body)
+        response = client.put(
+            url=f"/{collection}/{document_ids[0]}", json=request_body
+        )
         response_body = response.json()
 
         assert response.status_code == 200
-        assert str(doc_id) == response_body["_id"]
+        assert str(document_ids[0]) == response_body["_id"]
 
         get_model_from_collection(collection).parse_obj(response_body)
         del response_body["_id"]
 
+        document = await get_document_by_id(collection, document_ids[0])
         assert document[kept_attr] == response_body[kept_attr]
         assert request_body == {
             k: v for k, v in response_body.items() if k != kept_attr
@@ -274,17 +256,14 @@ async def test_GIVEN_unknown_id_and_fully_updated_document_request_body_WHEN_put
 async def test_GIVEN_valid_id_WHEN_delete_document_THEN_204(
     client, collection
 ):
-    await clear_collection(collection)
-    await populate_collection(collection, 1)
-    document = await get_random_document_from_collection(collection)
-    doc_id = document["_id"]
-    response = client.delete(url=f"/{collection}/{doc_id}")
+    document_ids = await populate_collection(collection, 1)
+    response = client.delete(url=f"/{collection}/{document_ids[0]}")
 
     assert response.status_code == 204
 
     commons = await common_parameters()
     deleted_document = await commons["db"][collection].find_one(
-        {"_id": doc_id}
+        {"_id": document_ids[0]}
     )
     assert deleted_document is None
 

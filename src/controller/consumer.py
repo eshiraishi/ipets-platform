@@ -25,11 +25,9 @@ async def create_consumer(
 ):
     body = jsonable_encoder(body)
     new_document = await commons["db"]["consumers"].insert_one(body)
-    print("NEW DOCUMENT", new_document)
     created_document = await commons["db"]["consumers"].find_one(
         {"_id": new_document.inserted_id}
     )
-    print("CREATED DOCUMENT", created_document)
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
         content=json_util.dumps(created_document),

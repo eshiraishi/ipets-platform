@@ -10,7 +10,6 @@ class ServiceModel(BaseModel):
     name: str
     description: Optional[str]
     price: float
-    # providerId: PyObjectId
     providerId: constr(regex=REGEX_OBJECT_ID)
     thumbnail: Optional[str]
 
@@ -24,7 +23,6 @@ class UpdateServiceModel(BaseModel):
     name: Optional[str]
     description: Optional[str]
     price: Optional[float]
-    # providerId: Optional[PyObjectId]
     providerId: Optional[constr(regex=REGEX_OBJECT_ID)]
     thumbnail: Optional[str]
 
