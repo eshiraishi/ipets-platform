@@ -1,4 +1,4 @@
-from typing import Optional
+
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field, constr
 from . import REGEX_CPF
@@ -7,16 +7,16 @@ from .utils import Address, CreditCard, Pet, PyObjectId
 
 class ConsumerModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    cpf: Optional[constr(regex=REGEX_CPF)]
-    name: Optional[str]
-    email: Optional[EmailStr]
-    password: Optional[str]
-    address: Optional[Address]
-    creditCard: Optional[CreditCard]
-    avatar: Optional[Optional[str]]
-    pets: Optional[list[Pet]]
-    phone: Optional[str]
-    birthDate: Optional[str]
+    cpf: constr(regex=REGEX_CPF) | None
+    name: str | None
+    email: EmailStr | None
+    password: str | None
+    address: Address | None
+    creditCard: CreditCard | None
+    avatar: str | None
+    pets: list[Pet] | None
+    phone: str | None
+    birthDate: str | None
 
     class Config:
         allow_population_by_field_name = True
@@ -25,16 +25,16 @@ class ConsumerModel(BaseModel):
 
 
 class UpdateConsumerModel(BaseModel):
-    cpf: Optional[constr(regex=REGEX_CPF)]
-    name: Optional[str]
-    email: Optional[EmailStr]
-    password: Optional[str]
-    address: Optional[Address]
-    creditCard: Optional[CreditCard]
-    avatar: Optional[str]
-    pets: Optional[list[Pet]]
-    phone: Optional[str]
-    birthDate: Optional[str]
+    cpf: constr(regex=REGEX_CPF) | None
+    name: str | None
+    email: EmailStr | None
+    password: str | None
+    address: Address | None
+    creditCard: CreditCard | None
+    avatar: str | None
+    pets: list[Pet] | None
+    phone: str | None
+    birthDate: str | None
 
     class Config:
         allow_population_by_field_name = True

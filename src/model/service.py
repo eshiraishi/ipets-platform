@@ -1,4 +1,3 @@
-from typing import Optional
 from bson import ObjectId
 from pydantic import BaseModel, Field, constr
 from . import REGEX_OBJECT_ID
@@ -8,10 +7,10 @@ from .utils import PyObjectId
 class ServiceModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     name: str
-    description: Optional[str]
+    description: str | None
     price: float
     providerId: constr(regex=REGEX_OBJECT_ID)
-    thumbnail: Optional[str]
+    thumbnail: str | None
 
     class Config:
         allow_population_by_field_name = True
@@ -20,11 +19,11 @@ class ServiceModel(BaseModel):
 
 
 class UpdateServiceModel(BaseModel):
-    name: Optional[str]
-    description: Optional[str]
-    price: Optional[float]
-    providerId: Optional[constr(regex=REGEX_OBJECT_ID)]
-    thumbnail: Optional[str]
+    name: str | None
+    description: str | None
+    price: float | None
+    providerId: constr(regex=REGEX_OBJECT_ID) | None
+    thumbnail: str | None
 
     class Config:
         allow_population_by_field_name = True

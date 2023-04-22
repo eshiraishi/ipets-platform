@@ -643,7 +643,7 @@ components:
     ProviderModel:
       type: object
       properties:
-        doc_id:
+        document_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -685,7 +685,7 @@ components:
         #     type: string
         #     format: uuid
       required:
-        - "doc_id"
+        - "document_id"
         - "name"
         - "cnpj"
         - "password"
@@ -696,7 +696,7 @@ components:
     ConsumerModel:
       type: object
       properties:
-        doc_id:
+        document_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -738,7 +738,7 @@ components:
           # pattern: '^[a-fA-F\d]{24}$'
           # example: 45cbc4a0e4123f6920000002
       required:
-        - "doc_id"
+        - "document_id"
         - "name"
         - "cpf"
         - "password"
@@ -749,7 +749,7 @@ components:
     ServiceModel:
       type: object
       properties:
-        doc_id:
+        document_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -772,14 +772,14 @@ components:
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
       required:
-        - "doc_id"
+        - "document_id"
         - "name"
         - "price"
         - "providerId"
     RequestModel:
       type: object
       properties:
-        doc_id:
+        document_id:
           type: string
           pattern: '^[a-fA-F\d]{24}$'
           example: 45cbc4a0e4123f6920000002
@@ -799,7 +799,7 @@ components:
           type: string
           example: Rejeitado
       required:
-        - "doc_id"
+        - "document_id"
         - "consumerId"
         - "serviceId"
         - "date"
@@ -822,7 +822,7 @@ components:
     Address:
       type: object
       properties:
-        # doc_id:
+        # document_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -845,7 +845,7 @@ components:
           type: string
           example: "01311000"
       required:
-        - "doc_id"
+        - "document_id"
         - "street"
         - "number"
         - "city"
@@ -853,7 +853,7 @@ components:
         - "postcode"
     BankAccount:
       properties:
-        # doc_id:
+        # document_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -867,13 +867,13 @@ components:
           type: string
           example: "1"
       required:
-        - "doc_id"
+        - "document_id"
         - "agency"
         - "accountNumber"
         - "digits"
     CreditCard:
       properties:
-        # doc_id:
+        # document_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -893,7 +893,7 @@ components:
     Pet:
       type: object
       properties:
-        # doc_id:
+        # document_id:
         #   type: string
         #   pattern: '^[a-fA-F\d]{24}$'
         #   example: 45cbc4a0e4123f6920000002
@@ -917,7 +917,7 @@ components:
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
       required:
-        - "doc_id"
+        - "document_id"
         - "name"
         - "species"
         - "race"
@@ -1047,7 +1047,7 @@ components:
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
       # required:
-      #   - "doc_id"
+      #   - "document_id"
       #   - "consumerId"
       #   - "serviceId"
       #   - "date"

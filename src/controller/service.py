@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, HTTPException, Response
 from bson import json_util
 from .utils import common_parameters
@@ -36,8 +35,8 @@ async def create_service(
 
 @router.get(
     "/",
-    response_description="List all services",
-    response_model=List[ServiceModel],
+    response_description="list all services",
+    response_model=list[ServiceModel],
 )
 async def list_services(commons: Annotated[dict, Depends(common_parameters)]):
     documents = await commons["db"]["services"].find().to_list(None)
@@ -45,27 +44,30 @@ async def list_services(commons: Annotated[dict, Depends(common_parameters)]):
 
 
 @router.get(
-    "/{doc_id}",
+    "/{document_id}",
     response_description="Get a single service",
     response_model=ServiceModel,
 )
 async def show_service(
-    doc_id: PyObjectId, commons: Annotated[dict, Depends(common_parameters)]
+    document_id: PyObjectId,
+    commons: Annotated[dict, Depends(common_parameters)],
 ):
-    document = await commons["db"]["services"].find_one({"_id": doc_id})
+    document = await commons["db"]["services"].find_one({"_id": document_id})
     if document is not None:
         return document
 
-    raise HTTPException(status_code=404, detail=f"service {doc_id} not found")
+    raise HTTPException(
+        status_code=404, detail=f"service {document_id} not found"
+    )
 
 
 @router.put(
-    "/{doc_id}",
+    "/{document_id}",
     response_description="Update a service",
     response_model=ServiceModel,
 )
 async def update_service(
-    doc_id: PyObjectId,
+    document_id: PyObjectId,
     body: UpdateServiceModel,
     commons: Annotated[dict, Depends(common_parameters)],
 ):
@@ -73,34 +75,41 @@ async def update_service(
 
     if len(update_set) >= 1:
         update_result = await commons["db"]["services"].update_one(
-            {"_id": doc_id}, {"$set": update_set}
+            {"_id": document_id}, {"$set": update_set}
         )
 
         if update_result.modified_count == 1:
             if (
                 updated_document := await commons["db"]["services"].find_one(
-                    {"_id": doc_id}
+                    {"_id": document_id}
                 )
             ) is not None:
                 return updated_document
 
     if (
         existing_document := await commons["db"]["services"].find_one(
-            {"_id": doc_id}
+            {"_id": document_id}
         )
     ) is not None:
         return existing_document
 
-    raise HTTPException(status_code=404, detail=f"service {doc_id} not found")
+    raise HTTPException(
+        status_code=404, detail=f"service {document_id} not found"
+    )
 
 
-@router.delete("/{doc_id}", response_description="Delete a service")
+@router.delete("/{document_id}", response_description="Delete a service")
 async def delete_service(
-    doc_id: PyObjectId, commons: Annotated[dict, Depends(common_parameters)]
+    document_id: PyObjectId,
+    commons: Annotated[dict, Depends(common_parameters)],
 ):
-    delete_result = await commons["db"]["services"].delete_one({"_id": doc_id})
+    delete_result = await commons["db"]["services"].delete_one(
+        {"_id": document_id}
+    )
 
     if delete_result.deleted_count == 1:
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=f"service {doc_id} not found")
+    raise HTTPException(
+        status_code=404, detail=f"service {document_id} not found"
+    )

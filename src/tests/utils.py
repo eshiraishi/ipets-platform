@@ -23,7 +23,7 @@ logger = getLogger()
 logger.setLevel("DEBUG")
 
 
-def create_random_b64_image():
+def create_random_b64_image() -> str:
     image = Image.fromarray(
         np.random.randint(low=0, high=256, size=(100, 100, 3), dtype=np.uint8)
     ).convert("RGB")
@@ -32,10 +32,10 @@ def create_random_b64_image():
     return base64.b64encode(buffer.getvalue()).decode()
 
 
-def create_provider_dict():
+def create_provider_dict() -> dict:
     return {
         "cnpj": cnpj.generate(),
-        "name": faker.name(),
+        "name": faker.company(),
         "email": faker.email(),
         "password": secrets.token_hex(),
         "avatar": create_random_b64_image(),
@@ -56,7 +56,7 @@ def create_provider_dict():
     }
 
 
-def create_consumer_dict():
+def create_consumer_dict() -> dict:
     return {
         "cpf": cpf.generate(),
         "name": faker.name(),
@@ -102,7 +102,7 @@ def create_consumer_dict():
     }
 
 
-def create_service_dict():
+def create_service_dict() -> dict:
     name = random.choice(["Banho", "Tosa", "Banho e Tosa", "Hotel", "Creche"])
     return {
         "name": name,
@@ -113,7 +113,7 @@ def create_service_dict():
     }
 
 
-def create_request_dict():
+def create_request_dict() -> dict:
     return {
         "consumerId": str(ObjectId()),
         "serviceId": str(ObjectId()),
@@ -122,7 +122,7 @@ def create_request_dict():
     }
 
 
-def create_dict(collection_name):
+def create_dict(collection_name: str) -> dict:
     generators = {
         "providers": create_provider_dict,
         "consumers": create_consumer_dict,
@@ -133,7 +133,9 @@ def create_dict(collection_name):
     return generators[collection_name]()
 
 
-def get_model_from_collection(collection_name):
+def get_model_from_collection(
+    collection_name: str,
+) -> ProviderModel | ConsumerModel | ServiceModel | RequestModel:
     models = {
         "providers": ProviderModel,
         "consumers": ConsumerModel,
@@ -144,7 +146,14 @@ def get_model_from_collection(collection_name):
     return models[collection_name]
 
 
-def get_update_model_from_collection(collection_name):
+def get_update_model_from_collection(
+    collection_name: str,
+) -> (
+    UpdateProviderModel
+    | UpdateConsumerModel
+    | UpdateServiceModel
+    | UpdateRequestModel
+):
     models = {
         "providers": UpdateProviderModel,
         "consumers": UpdateConsumerModel,
@@ -155,7 +164,7 @@ def get_update_model_from_collection(collection_name):
     return models[collection_name]
 
 
-async def populate_collection(collection_name, amount):
+async def populate_collection(collection_name: str, amount: int) -> list:
     commons = await common_parameters()
     assert amount >= 1
     if amount == 1:
@@ -170,20 +179,22 @@ async def populate_collection(collection_name, amount):
         return [str(inserted_id) for inserted_id in result.inserted_ids]
 
 
-async def clear_collection(collection_name):
+async def clear_collection(collection_name: str) -> None:
     commons = await common_parameters()
     await commons["db"][collection_name].drop()
     await commons["db"].create_collection(collection_name)
 
 
-async def get_random_document_from_collection(collection_name):
+async def get_random_document_from_collection(collection_name: str) -> dict:
     commons = await common_parameters()
     pipe = [{"$sample": {"size": 1}}]
     docs = await commons["db"][collection_name].aggregate(pipe).to_list(None)
     return docs[0]
 
 
-async def get_document_by_id(collection_name, doc_id):
+async def get_document_by_id(collection_name: str, document_id: str) -> dict:
     commons = await common_parameters()
-    document = await commons["db"][collection_name].find_one({"_id": doc_id})
+    document = await commons["db"][collection_name].find_one(
+        {"_id": document_id}
+    )
     return document

@@ -1,4 +1,3 @@
-from typing import Optional
 from bson import ObjectId
 from pydantic import BaseModel
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -6,18 +5,18 @@ import os
 
 
 class Address(BaseModel):
-    street: Optional[str]
-    number: Optional[str]
-    complement: Optional[str]
-    city: Optional[str]
-    state: Optional[str]
-    postcode: Optional[str]
+    street: str | None
+    number: str | None
+    complement: str | None
+    city: str | None
+    state: str | None
+    postcode: str | None
 
 
 class BankAccount(BaseModel):
-    agency: Optional[str]
-    accountNumber: Optional[str]
-    digit: Optional[str]
+    agency: str | None
+    accountNumber: str | None
+    digit: str | None
 
 
 def get_database():
@@ -42,10 +41,10 @@ class PyObjectId(ObjectId):
 
 
 class CreditCard(BaseModel):
-    code: Optional[str]
-    name: Optional[str]
-    expirationDate: Optional[str]
-    cvv: Optional[str]
+    code: str | None
+    name: str | None
+    expirationDate: str | None
+    cvv: str | None
 
     class Config:
         allow_population_by_field_name = True
@@ -54,12 +53,12 @@ class CreditCard(BaseModel):
 
 
 class Pet(BaseModel):
-    name: Optional[str]
-    species: Optional[str]
-    race: Optional[str]
-    age: Optional[int]
-    description: Optional[str]
-    avatar: Optional[str]
+    name: str | None
+    species: str | None
+    race: str | None
+    age: int | None
+    description: str | None
+    avatar: str | None
 
     class Config:
         allow_population_by_field_name = True

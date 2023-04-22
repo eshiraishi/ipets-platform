@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, HTTPException, Response
 from bson import json_util
 from .utils import common_parameters
@@ -36,8 +35,8 @@ async def create_provider(
 
 @router.get(
     "/",
-    response_description="List all providers",
-    response_model=List[ProviderModel],
+    response_description="list all providers",
+    response_model=list[ProviderModel],
 )
 async def list_providers(commons: Annotated[dict, Depends(common_parameters)]):
     documents = await commons["db"]["providers"].find().to_list(None)
@@ -45,27 +44,30 @@ async def list_providers(commons: Annotated[dict, Depends(common_parameters)]):
 
 
 @router.get(
-    "/{doc_id}",
+    "/{document_id}",
     response_description="Get a single provider",
     response_model=ProviderModel,
 )
 async def show_provider(
-    doc_id: PyObjectId, commons: Annotated[dict, Depends(common_parameters)]
+    document_id: PyObjectId,
+    commons: Annotated[dict, Depends(common_parameters)],
 ):
-    document = await commons["db"]["providers"].find_one({"_id": doc_id})
+    document = await commons["db"]["providers"].find_one({"_id": document_id})
     if document is not None:
         return document
 
-    raise HTTPException(status_code=404, detail=f"provider {doc_id} not found")
+    raise HTTPException(
+        status_code=404, detail=f"provider {document_id} not found"
+    )
 
 
 @router.put(
-    "/{doc_id}",
+    "/{document_id}",
     response_description="Update a provider",
     response_model=ProviderModel,
 )
 async def update_provider(
-    doc_id: PyObjectId,
+    document_id: PyObjectId,
     body: UpdateProviderModel,
     commons: Annotated[dict, Depends(common_parameters)],
 ):
@@ -73,36 +75,41 @@ async def update_provider(
 
     if len(update_set) >= 1:
         update_result = await commons["db"]["providers"].update_one(
-            {"_id": doc_id}, {"$set": update_set}
+            {"_id": document_id}, {"$set": update_set}
         )
 
         if update_result.modified_count == 1:
             if (
                 updated_document := await commons["db"]["providers"].find_one(
-                    {"_id": doc_id}
+                    {"_id": document_id}
                 )
             ) is not None:
                 return updated_document
 
     if (
         existing_document := await commons["db"]["providers"].find_one(
-            {"_id": doc_id}
+            {"_id": document_id}
         )
     ) is not None:
         return existing_document
 
-    raise HTTPException(status_code=404, detail=f"provider {doc_id} not found")
+    raise HTTPException(
+        status_code=404, detail=f"provider {document_id} not found"
+    )
 
 
-@router.delete("/{doc_id}", response_description="Delete a provider")
+@router.delete("/{document_id}", response_description="Delete a provider")
 async def delete_provider(
-    doc_id: PyObjectId, commons: Annotated[dict, Depends(common_parameters)]
+    document_id: PyObjectId,
+    commons: Annotated[dict, Depends(common_parameters)],
 ):
     delete_result = await commons["db"]["providers"].delete_one(
-        {"_id": doc_id}
+        {"_id": document_id}
     )
 
     if delete_result.deleted_count == 1:
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=404, detail=f"provider {doc_id} not found")
+    raise HTTPException(
+        status_code=404, detail=f"provider {document_id} not found"
+    )
