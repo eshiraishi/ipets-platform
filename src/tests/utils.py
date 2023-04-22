@@ -39,6 +39,7 @@ def create_provider_dict():
         "email": faker.email(),
         "password": secrets.token_hex(),
         "avatar": create_random_b64_image(),
+        "phone": faker.phone_number(),
         "address": {
             "street": f"{faker.street_prefix()} {faker.street_name()}",
             "number": str(random.randint(1, 10**3) - 1),
@@ -62,6 +63,8 @@ def create_consumer_dict():
         "email": faker.email(),
         "password": secrets.token_hex(),
         "avatar": create_random_b64_image(),
+        "phone": faker.phone_number(),
+        "birthDate": faker.past_date().isoformat(),
         "address": {
             "street": f"{faker.street_prefix()} {faker.street_name()}",
             "number": str(random.randint(1, 10**3) - 1),
@@ -92,7 +95,7 @@ def create_consumer_dict():
                         "Não possui pedrigree",
                     ]
                 ),
-                "avatar": create_random_b64_image()
+                "avatar": create_random_b64_image(),
             }
             for _ in range(random.randint(1, 10))
         ],

@@ -4,7 +4,7 @@ Repositório contendo o código da plataforma para o iPets, aplicativo voltado p
 
 Como gerar o servidor:
 
-```bash
+```shell
 python -m pip install --upgrade
 pip install virtualenv
 python -m virtualenv virtualenv
@@ -14,20 +14,20 @@ fastapi-codegen --input openapi.yml --output app
 ```
 
 Como  gerar os requirements:
-```bash
+```shell
 pip install -r dev-requirments.txt
 ```
 No windows:
-```bash
+```shell
 python -m piptools compile requirements.in --resolver=backtracking
 ```
 No linux:
-```bash
+```shell
 pip-compile requirements.in --resolver=backtracking
 ```
 
 Como instalar as dependências:
-```bash
+```shell
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
@@ -39,6 +39,11 @@ uvicorn src.main:app --reload
 ```
 
 Como executar os testes (aviso: irá apagar todos os registros):
-```bash
+```shell
 pytest src/tests --envfile .envrc -x -l --tb=native -v --pdb --cov=src
+```
+
+Como hospedar o back temporariamente na internet:
+```shell
+cloudflared tunnel --url http://localhost:8000
 ```

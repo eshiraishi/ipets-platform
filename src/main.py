@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from .controller import provider, service, consumer, request
 from .model.utils import get_database
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.responses import RedirectResponse
 
 app = FastAPI(
     title="iPets",
@@ -32,3 +32,8 @@ app.include_router(provider.router)
 app.include_router(consumer.router)
 app.include_router(service.router)
 app.include_router(request.router)
+
+
+@app.get("/", response_class=RedirectResponse, include_in_schema=False)
+async def redirect_root():
+    return "/redoc"

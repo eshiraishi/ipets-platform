@@ -7,13 +7,14 @@ from .utils import Address, BankAccount, PyObjectId
 
 class ProviderModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    cnpj: constr(regex=REGEX_CNPJ)
-    name: str
-    email: EmailStr
-    password: str
-    address: Address
-    bankAccount: BankAccount
+    cnpj: Optional[constr(regex=REGEX_CNPJ)]
+    name: Optional[str]
+    email: Optional[EmailStr]
+    password: Optional[str]
+    address: Optional[Address]
+    bankAccount: Optional[BankAccount]
     avatar: Optional[str]
+    phone: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
@@ -29,6 +30,7 @@ class UpdateProviderModel(BaseModel):
     address: Optional[Address]
     bankAccount: Optional[BankAccount]
     avatar: Optional[str]
+    phone: Optional[str]
 
     class Config:
         allow_population_by_field_name = True
