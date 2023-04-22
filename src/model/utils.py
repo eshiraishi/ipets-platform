@@ -59,6 +59,7 @@ class Pet(BaseModel):
     race: Optional[str]
     age: Optional[int]
     description: Optional[str]
+    avatar: Optional[str]
 
     class Config:
         allow_population_by_field_name = True

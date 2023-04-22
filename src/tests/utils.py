@@ -92,6 +92,7 @@ def create_consumer_dict():
                         "Não possui pedrigree",
                     ]
                 ),
+                "avatar": create_random_b64_image()
             }
             for _ in range(random.randint(1, 10))
         ],
